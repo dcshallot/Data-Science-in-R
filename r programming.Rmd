@@ -1,0 +1,80 @@
+---
+[cousera数据科学]R Programming
+---
+
+## 第一课 基础篇
+1.R的对象种类（原子级，只有这几种），对一门语言来说，数据类型是需要首先搞明白的character
+numeric
+interger--这玩意会跟numeric混淆，一般认为要as.numeric一下才好，为什么不知道。这玩意后面跟个L
+complex-- 复数，一般我用不着
+logical --逻辑
+
+2.关于numbers
+Inf 是可以运算的，1/0 =Inf, 1/Inf =0, 此外还有-Inf的存在
+NaN 表示undefined value，”不是一个数字“，比如0/0，或者缺失值，但是这玩意不同于na
+(http://www.cookbook-r.com/Basics/Working_with_NULL_NA_and_NaN/)
+
+
+3.属性attributes，不是所有的object都有全部的属性哈
+names --names向量，row.names,col.names数据框 ，rownames, colnames矩阵，dimnames,矩阵 
+dimensions ( 矩阵，数组）
+class --这个谁都有
+length
+以上这些用attributes（）查看
+4.Fators，存成integer，有label。factor比integer更好懂（有label),比character存储更省空间
+factor ( vector, levels=c(") )
+
+5.Missing values
+NaN 未定义的数学计算结果，本身也是Na
+Na 更全，integer, character,类型都有
+
+6.Subsetting Lists
+```{r}
+x <- list( foo=1:4, bar = 0.6 ) ;
+class( x[1] ) 
+class(  x[[1]] ) # 单层引list，双层引内容
+class( x$foo ) # 
+```
+
+Nested的情况：
+```{r}
+x <- list( a =list(10,12,14), b=c(3.14, 2.81))x[[c(1,3)]]
+x[[1]][[3]]
+x[[c(2,1)]]
+```
+
+7.读取数据
+read.table/ read.csv
+readLines, 读取txt文件，通常支持大文件的读入，Rstudio上导入csv/txt的功能代码也是这个
+source  读取R代码
+dget 同上，没用过
+load 读取保存好的工作环境 workspaces，一般来说，原始数据比较大，我喜欢处理好之后存成workspaces，再做的时候读这个
+unserialize 读取二进制的R对象，这干啥的？
+
+8.读取大数据集：内存/操作系统
+1,500,000 * 120 数据，每个单元8 bytes =...= 1.34GB内存需求
+事实上如果要做运算还要大一些，建议内存是数据量的3倍
+
+
+## 第二课 结构控制,
+
+1.控制结构
+if, else 
+for 固定数目的循环
+while 依照条件循环
+repeat 无条件重复
+break 停止
+next 跳过一部
+return 返回值
+
+2.if
+if () {} else {} / ifelse(  , , )
+if () { } else if () { } else if () { } ... else { }
+
+3.for
+```{r}
+for ( i in 1:10 ) { print (i )}
+for ( i in seq_along( names(iris)) ) { print( names(iris)[i])  }
+```
+
+
