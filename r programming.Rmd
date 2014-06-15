@@ -27,6 +27,7 @@ factor ( vector, levels=c(") )
 5.Missing values
 NaN 未定义的数学计算结果，本身也是Na
 Na 更全，integer, character,类型都有
+Na不能用 ==判断，而要用is.na，因为它不是一个真实的值，只是一个placeholder。。。
 
 6.Subsetting Lists
 ```{r}
