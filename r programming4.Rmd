@@ -1,5 +1,5 @@
 ---
-[cousera数据科学]R Programming WEEKW 4
+[cousera数据科学]R Programming WEEK 4
 ---
 
 ## 第四课 仿真模拟和代码优化
@@ -103,4 +103,25 @@ summaryRprof()$sample.interval
 
 ```
 
+课程作业
+QUIZ
+qpois - Probability distribution functions beginning with the `q' prefix are used to evaluate the quantile function
 
+set.seed(10)
+x <- rbinom(10, 10, 0.5)
+e <- rnorm(10, 0, 20)
+y <- 0.5 + 2 * x + e
+
+Generate data from a Poisson generalized linear model
+Generate uniformly distributed random dat
+Generate data from a Normal linear model
+Generate random exponentially distributed data
+
+library(datasets)
+Rprof()
+fit <- lm(y ~ x1 + x2)
+Rprof(NULL)
+
+(Assume that y, x1, and x2 are present in the workspace.) Without running the code, what percentage of the run time is spent in the 'lm' function, based on the 'by.total' method of normalization shown in 'summaryRprof()'?
+
+100%？ 50%？  23%？  It is not possible to tell?
