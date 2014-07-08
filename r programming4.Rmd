@@ -2,46 +2,46 @@
 [cousera数据科学]R Programming WEEK 4
 ---
 
-## 第四课 仿真模拟和代码优化
+## 第四�? 仿真模拟和代码优�?
 
 1.仿真模拟相关
-先介绍了个不相干但用处极大的函数str，基本上那些不明觉厉的function的output我都愿意用它来看看内容。比如glm的结果。
+先介绍了个不相干但用处极大的函数str，基本上那些不明觉厉的function的output我都愿意用它来看看内容。比如glm的结果�?
 然后是关于随机数的四个函数：
 d for density,
 r for random number generation,
 p for culmulative distribution
 q for quantile function
 ```{r}
-rnorm( 5) # 标准正太分布，生成随机数5个
-dnorm( c(0,100000) ) # x的正太分布密度函数值-记得那些年我们学的钟型曲线吗？x=0就是钟的顶点
+rnorm( 5) # 标准正太分布，生成随机数5�?
+dnorm( c(0,100000) ) # x的正太分布密度函数�?-记得那些年我们学的钟型曲线吗？x=0就是钟的顶点
 pnorm( c(0,3)) # 分布函数，密度函数的积分
 qnorm( c( 0.5, 0.9, 0.95, 0.99) ) #给定累计概率值，找到那个x，注意这都不是双侧概率哈
 
 rpois #泊松分布
 ```
 
-另外set.seed(n)会控制每次生成同样的一组随机数，这样过程可重复。
-模拟这事儿我用不着，这里偷懒不继续了。
+另外set.seed(n)会控制每次生成同样的一组随机数，这样过程可重复�?
+模拟这事儿我用不着，这里偷懒不继续了�?
 
 2.Profiling R Code
 为什么我的代码运行得这么慢？这是个让人鸡冻的话题~~~~~
-profiling 是一种系统的检验代码每一部分运行速度的方式，可以帮助你优化代码，让他们更有效率……迫不及待了吧
+profiling 是一种系统的检验代码每一部分运行速度的方式，可以帮助你优化代码，让他们更有效率……迫不及待了�?
 
 3.第一招system.time()
-流逝时间: 实际所用时间   
+流逝时�?: 实际所用时�?   
 用户时间: CPU运算时间   
-下面这个例子平易近人，
+下面这个例子平易近人�?
 ```{r}
-system.time( readLines("http://www.jhsph.edu")) #用户时间短，流逝时间看人品和网速
+system.time( readLines("http://www.jhsph.edu")) #用户时间短，流逝时间看人品和网�?
 
 hilbert <- function(n) {
   i <- 1:n
   1/outer( i-1, i, "+")
 }
 x <- hilbert(500)
-system.time( svd(x)) # 看机器性能，土豪机的流失时间应该比较短吧
+system.time( svd(x)) # 看机器性能，土豪机的流失时间应该比较短�?
 
-#另一种用法
+#另一种用�?
 system.time( {
   n <- 1000
   r <- numeric(n)
@@ -51,7 +51,7 @@ system.time( {
   }
 })
 
-#个人觉得方便的用法
+#个人觉得方便的用�?
 ptm <- proc.time()
 n <- 1000
 r <- numeric(n)
@@ -65,22 +65,22 @@ proc.time()-ptm
 ```
 
 以下部分是玄学：
-多核/分布式可以缩短elapsted time，因为user time可以并行。
+多核/分布式可以缩短elapsted time，因为user time可以并行�?
 
-lecturer说，很多线性计算比如regression，prediction或者矩阵计算之类所用的算法包括在 Multi-threaded BLAS libraries里面，这些库已经为多核计算优化过了。（BLAS,全称Basic Linear Algebra Subprograms，即基础线性代数子程序库，里面拥有大量已经编写好的关于线性代数运算的程序，包括veclib/Accelerate， ATLAS, ACML, MKL对应mac，AMD和INTEL）
+lecturer说，很多线性计算比如regression，prediction或者矩阵计算之类所用的算法包括�? Multi-threaded BLAS libraries里面，这些库已经为多核计算优化过了。（BLAS,全称Basic Linear Algebra Subprograms，即基础线性代数子程序库，里面拥有大量已经编写好的关于线性代数运算的程序，包括veclib/Accelerate�? ATLAS, ACML, MKL对应mac，AMD和INTEL�?
 这难道意味着R是支持多线程的？之前听说R是不支持多核的啊，还是说R只有部分运算可以利用多线程技术？
-求高手解答。。。另外线程的个数大于等于核的个数哈
+求高手解答。。。另外线程的个数大于等于核的个数�?
 
-还提到了parallel包，不光可以利用多核，还可以多台计算机并行。依然不明觉厉。
+还提到了parallel包，不光可以利用多核，还可以多台计算机并行。依然不明觉厉�?
 
 
 4.The R Profiler
 不能跟system.time()一起用
 Rprof() 跟踪函数调用栈里函数的时间消耗：
-以0.02秒为间隔抽样，看当前有效函数是哪个，结果写入Rprof.out，这相当于一个日志系统。
-summaryRprof()  by.total用总时间除以每个函数运行的时间； by.self去掉调用栈里面上层function。
-(call stack调用堆栈:调用堆栈是一个方法列表，按调用顺序保存所有在运行期被调用的方法)
-另外，C和Fortran代码不能显示在这里面。
+�?0.02秒为间隔抽样，看当前有效函数是哪个，结果写入Rprof.out，这相当于一个日志系统�?
+summaryRprof()  by.total用总时间除以每个函数运行的时间�? by.self去掉调用栈里面上层function�?
+(call stack调用堆栈:调用堆栈是一个方法列表，按调用顺序保存所有在运行期被调用的方�?)
+另外，C和Fortran代码不能显示在这里面�?
 
 ```{r}
 # forms matrix of powers of the vector x , through degree dg
@@ -124,4 +124,4 @@ Rprof(NULL)
 
 (Assume that y, x1, and x2 are present in the workspace.) Without running the code, what percentage of the run time is spent in the 'lm' function, based on the 'by.total' method of normalization shown in 'summaryRprof()'?
 
-100%？ 50%？  23%？  It is not possible to tell?
+100%�? 50%�?  23%�?  It is not possible to tell?
