@@ -9,7 +9,8 @@ output: html_document
 
 ##1.概述
 
-数据获取和清洗，这个过程所费的时间精力可能会占到整个项目的80%，有了干净的数据才有接下去才的数据分析Raw data -> Processing script -> tidy data
+数据获取和清洗，这个过程所费的时间精力可能会占到整个项目的80%，有了干净的数据才有接下去才的数据分析
+Raw data -> Processing script -> tidy data
 
 
 这中间有4样东西：
@@ -65,7 +66,30 @@ read.table()
 
 ##4.读excel表格
 read.xlsx() { xlsx package}
-略
+扩展，XLConnect是个扩展的包，可以做更多数据操作
+
+##5.读XML数据
+XML组成： Markup, Content
+< section  number='3'> hello,world < section>
+标签、属性和内容
+
+```{r}
+library(XML)
+fileUrl <- "http://www.w3schools.com/xml/simple.xml"
+doc <- xmlTreeParse( fileUrl, useInternal=T)
+rootNode <- xmlRoot(doc)
+xmlName(rootNode)
+xmlValue(rootNode)
+rootNode[[1]]
+rootNode[[1]][[1]]
+xmlSApply( rootNode, xmlValue)
+xpathSApply( rootNode, "//name", xmlValue)
+xpathSApply( rootNode, "//price", xmlValue)
+```
+关于XPath的内容另行参考。
+
+
+##6.读JSON数据
 
 
 
