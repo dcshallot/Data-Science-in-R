@@ -9,8 +9,7 @@ output: html_document
 
 ##1.概述
 
-数据获取和清洗，这个过程所费的时间精力可能会占到整个项目的80%，有了干净的数据才有接下去才的数据分析
-Raw data -> Processing script -> tidy data
+数据获取和清洗，这个过程所费的时间精力可能会占到整个项目的80%，有了干净的数据才有接下去才的数据分析Raw data -> Processing script -> tidy data
 
 
 这中间有4样东西：
@@ -66,13 +65,10 @@ read.table()
 
 ##4.读excel表格
 read.xlsx() { xlsx package}
-扩展，XLConnect是个扩展的包，可以做更多数据操作
+略
 
-##5.读XML数据
-XML组成： Markup, Content
-< section  number='3'> hello,world < section>
-标签、属性和内容
-
+##5.读取XML
+< section  number='3'> hello,world < /section>
 ```{r}
 library(XML)
 fileUrl <- "http://www.w3schools.com/xml/simple.xml"
@@ -86,12 +82,59 @@ xmlSApply( rootNode, xmlValue)
 xpathSApply( rootNode, "//name", xmlValue)
 xpathSApply( rootNode, "//price", xmlValue)
 ```
-关于XPath的内容另行参考。
+????????????XPath???????????????????????????вο?????????
 
 
-##6.读JSON数据
+##6.read JSON data
 
 
 
 
 
+
+## quiz 1
+
+```{r}
+#1.2
+fileUrl <- "https://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Fss06hid.csv"
+download.file( fileUrl, destfile = "./cameras.csv" ) 
+cameras <- read.csv("E:/Program Files/RStudio/cameras.csv")
+
+table(cameras$VAL)
+table(cameras$FES)
+
+#3
+library(xlsx)
+dat  <- read.xlsx("E:/getdata-data-DATA.gov_NGAP.xlsx", sheetIndex=1, 
+                  startRow= 18, endRow= 23, colIndex= 7:15)
+sum(dat$Zip*dat$Ext,na.rm=T) 
+
+#4
+library(XML)
+fileUrl <- "http://d396qusza40orc.cloudfront.net/getdata%2Fdata%2Frestaurants.xml"
+doc <- xmlTreeParse( fileUrl, useInternal=T )
+Node <- xmlRoot(doc)
+zipc <- xpathSApply( Node[[1]], "//zipcode", xmlValue )
+length( zipc[ zipc=="21231"] )
+
+#5
+library(data.table)
+DT <- fread( "e:/getdata-data-ss06pid.csv")
+
+rowMeans(DT)[DT$SEX==1]; rowMeans(DT)[DT$SEX==2] # ==
+
+system.time( {
+    mean(DT[DT$SEX==1,]$pwgtp15);  mean(DT[DT$SEX==2,]$pwgtp15)
+} )
+system.time( {
+  sapply(split(DT$pwgtp15,DT$SEX),mean)
+})
+system.time( {
+  mean(DT$pwgtp15,by=DT$SEX)
+})
+
+tapply(DT$pwgtp15,DT$SEX,mean)
+
+DT[,mean(pwgtp15),by=SEX]
+
+```
