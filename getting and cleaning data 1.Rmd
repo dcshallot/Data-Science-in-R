@@ -82,13 +82,28 @@ xmlSApply( rootNode, xmlValue)
 xpathSApply( rootNode, "//name", xmlValue)
 xpathSApply( rootNode, "//price", xmlValue)
 ```
-????????????XPath???????????????????????????§Ó¦Ï?????????
 
 
 ##6.read JSON data
+```{r}
+library(jsonlite)
+# read
+jsonData <- fromJSON( "https://api.github.com/users/jtleek/repos" )
+names(jsonData)
+jsonData$owner$login
+# write
+myjson <- toJSON(iris, pretty = T )
+myjson
+```
+
+### WEEK2
+
+##1.read from APIs
+```{r}
+# twitter
 
 
-
+```
 
 
 
