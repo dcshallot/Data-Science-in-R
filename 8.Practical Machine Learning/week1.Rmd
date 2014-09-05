@@ -1,0 +1,36 @@
+---
+title: "Practical Machine Learning week1"
+author: "Dingchong"
+date: "Friday, September 05, 2014"
+output: html_document
+---
+
+Week 1
+
+Prediction motivation (8:26)
+What is prediction? (8:39)
+Relative importance of steps (9:45)
+In and out of sample errors (6:57)
+Prediction study design (9:05)
+Types of errors (10:35)
+Receiver Operating Characteristic (5:03)
+Cross validation (8:20)
+What data should you use? (6:01)
+
+
+WEEK1.1
+
+Study design -train vs test
+Consceptual issues - out of sample error, ROC
+practical implementation - caret package
+
+Components of a predictor:
+question -> input data -> features -> algorithm -> parameters -> evaluation
+
+
+
+```{r}
+summary(cars)
+```
+
+
