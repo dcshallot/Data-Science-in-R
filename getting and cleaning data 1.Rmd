@@ -9,7 +9,8 @@ output: html_document
 
 ##1.概述
 
-数据获取和清洗，这个过程所费的时间精力可能会占到整个项目的80%，有了干净的数据才有接下去才的数据分析Raw data -> Processing script -> tidy data
+数据获取和清洗，这个过程所费的时间精力可能会占到整个项目的80%，
+有了干净的数据才有接下去才的数据分析Raw data -> Processing script -> tidy data
 
 
 这中间有4样东西：
@@ -58,7 +59,7 @@ read.table()
   sep,间隔符号；
   row.names,可以定义行名，默认或者NULL则是序号；
   nrows，读入行数，数据量大是分批读入用；
-  quote，指定字符引用的符号`'" 之类的；
+  quote，指定字符引用的符号`'"' 之类的；
   na.string，代表NA的字符，如果raw data是SQL出来的，这里可以指定NULL；
   skip，从第几行开始读；
 相关read.csv(), read.csv2(), read.delim()...

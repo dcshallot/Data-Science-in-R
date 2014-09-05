@@ -1,0 +1,11 @@
+
+Practical Machine Learning
+
+WEEK1.1
+
+Study design -train vs test
+Consceptual issues - out of sample error, ROC
+practical implementation - caret package
+
+Components of a predictor:
+question -> input data -> features -> algorithm -> parameters -> evaluation
