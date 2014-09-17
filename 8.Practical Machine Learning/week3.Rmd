@@ -1,0 +1,51 @@
+---
+title: "Practical Machine Learning week3"
+author: "Dingchong"
+date: "Wednesday, September 17, 2014"
+output: html_document
+---
+
+# Week 3
+
+## Predicting with trees (12:51)
+
+```{r}
+data(iris)
+table(iris$Species)
+inTrain <- createDataPartition( y = iris$Species, p=0.75, list=F)
+training <- iris[inTrain, ]
+testing <- iris[-inTrain, ]
+
+qplot( Petal.Width, Sepal.Width, color = Species, data= training)
+# challenging for linear model
+
+modFit <- train( Species ~ . , method="rpart", data= training)
+print( modFit$finalModel)
+plot( modFit$finalModel, uniform=T, main="classifcation tree")
+text( modFit$finalModel, use.n=T, all= T, cex= 0.8)
+library(rattle);library(rpart.plot)
+fancyRpartPlot( modFit$finalModel)
+
+# predict
+predict( modFit, newdata= testing )
+```
+
+### Notes
+1. they use interactions
+2. data transformations less important
+3. multiple tree building packages: party, rpart, tree
+
+
+## Bagging (9:13)
+
+
+## Random Forests (6:49)
+
+
+## Boosting (7:08)
+
+
+## Model Based Prediction (11:39)
+
+
+

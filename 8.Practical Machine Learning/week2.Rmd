@@ -175,13 +175,75 @@ level2 feature creation
 
 ## Preprocessing with principal components analysis (14:07)
 
+### Basic PCA idea   
+we should pick this combination to capture the "most information" possible   
+Benefits: reduced number of predictors/ reduced noise( due to averaging )
+```{r}
+rm(list=ls()) 
+library(caret);library(kernlab);data(spam)
+inTrain <- createDataPartition( y = spam$type, p=0.75, list=F)
+training <- spam[inTrain, ]
+testing <- spam[-inTrain, ]
 
+M <- abs( cor(training[,-58]))
+diag(M) <- 0
+which( M > 0.8, arr.ind= T )
 
+names(spam)[c(34,32)]
+plot( spam[,34] , spam[,32])
+
+### PCA/SVD
+
+smallSpam <- spam[ , c(34,32)]
+prComp <- prcomp( smallSpam)
+plot( prComp$x[,1], prComp$x[,2])
+prComp$rotation
+# PCA ON spam data: all x into 2 comp
+typeColor <- ((spam$type =="spam")*1 + 1 )
+prComp <- prcomp( log10(spam[,-58]+1 )) # in case log(0) == -inf
+plot( prComp$x[,1], prComp$x[,2], col=typeColor, xlab="PC1", ylab="PC2")
+
+# preprocessing with PCA
+preProc <- preProcess( log10(training[,-58]+1), method="pca", pacComp=2 )
+trainPC <- predict( preProc, log10(training[,-58]+1))
+modelFit <- train( training$type ~ ., method="glm", data =  trainPC )
+testPC <- predict( preProc, log10( testing[, -58]+1))
+confusionMatrix( testing$type, predict( modelFit, testPC ))
+
+```
 
 ## Predicting with Regression (12:22)
 
 
+
 ## Predicting with Regression Multiple Covariates (11:12)
+
+factors as different level variables : 
+see the example below, there are 10 predictors!!!   
+```{r}
+rm( list=ls())
+library(ISLR);library(ggplot2);library(caret)
+data(Wage); Wage <- subset( Wage, select = -c(logwage))
+summary(Wage)
+
+inTrain <- createDataPartition( y = Wage$wage, p=0.75, list=F)
+training <- Wage[inTrain, ]
+testing <- Wage[-inTrain, ]
+
+qplot( age, wage, data=training)
+qplot( age, wage, color= jobclass , data=training)
+qplot( age, wage, color= education , data=training)
+
+modFit <- train( wage~ age + jobclass + education, 
+                 method = "lm", data = training )
+# factors as different level variables : there are 10 predictors
+finMod <- modFit$finalModel
+print(modFit)
+
+
+```
+
+
 
 
 
