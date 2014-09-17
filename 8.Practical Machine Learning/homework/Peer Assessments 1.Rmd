@@ -1,0 +1,93 @@
+---
+title: "Peer Assessments 1"
+author: "Dingchong"
+date: "Wednesday, September 17, 2014"
+output: html_document
+---
+
+# abstract
+## task
+The goal is to predict the manner in which they did the exercise ("classe" variable in the training set) . You should:   
+1. create a report describing how you built your model,   
+2. how you used cross validation,    
+3. what you think the expected out of sample error is ???   
+4. why you made the choices you did.    
+5. predict 20 different test cases.    
+
+## Submission   
+1. Submission: a link to Github repo with R markdown and compiled HTML file. Text < 2000 words and less than 5 figures.   
+2. Submit your predictions in appropriate format for automated grading, up to 2 times for each problem.   
+
+## Procedure   
+1.data preparation: environment settings, train/cv/test data split;    
+2.exploratory and preprocessing : outliers, relations;    
+3.model building;   
+4.
+
+# data preparation 
+set work directory, import raw data and clean. 
+```{r}
+setwd("C:/Users/dingchong/Documents/GitHub/datasciencecoursera/8.Practical Machine Learning/homework")
+train <- read.delim("pml-training.csv", sep =",", header = T, na.strings="#DIV/0!")
+fore <- read.csv("pml-testing.csv", header= T , na.strings="#DIV/0!")
+
+# wrong factor to numeric
+for ( i in 8:159) {
+  train[, i] <- as.numeric(train[,i])
+}
+summary(train)
+# vars with too much NA
+nas <- vector( length= ncol(train))
+for ( i in 1: ncol(train)) {
+  nas[i] <- length( which(is.na( train[,i]) ) )
+}
+a <- which( nas <= nrow(train)*0.2 ) 
+train <- train[ , as.numeric(a)]
+rm(a, i, nas)
+
+# data split
+library(caret)
+set.seed(111)
+inTrain <- createDataPartition( y = train$classe, p=0.6, list=F)
+training <- train[inTrain, ]
+testing <- train[-inTrain, ]
+inTest <- createDataPartition( y = testing$classe, p=0.5, list=F)
+cv <- testing[ inTest, ]
+test <- testing[ -inTest, ]
+rm(inTest, inTrain, testing, train)
+```
+
+# exploratory and preprocessing
+
+```{r}
+
+summary(training)
+
+
+
+
+```
+
+
+
+
+```{r}
+# submit the answer
+
+answers = rep("A", 20)
+
+pml_write_files = function(x){
+  n = length(x)
+  for(i in 1:n){
+    filename = paste0("problem_id_",i,".txt")
+    write.table(x[i],file=filename,quote=FALSE,row.names=FALSE,col.names=FALSE)
+  }
+}
+
+pml_write_files(answers)
+
+```
+
+
+
+

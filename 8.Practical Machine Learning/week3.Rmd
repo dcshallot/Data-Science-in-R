@@ -38,9 +38,54 @@ predict( modFit, newdata= testing )
 
 ## Bagging (9:13)
 
+### Bootstrap aggregating( bagging)
+1.Resample cases and recalculate predictions   
+2.Average or majority vote   
+3.What about bagging of different models?
+Notes: more userful for non-linear functions   
+```{r}
+library(ElemStatLearn); data( ozone, package="ElemStatLearn")
+ozone <- ozone[ order(ozone$ozone), ]
+head(ozone)
+```
+Bagged loess   
+predict temp by ozone
+```{r}
+ll <- matrix(NA, nrow=10, ncol= 155 )
+for ( i in 1:10 ) { # 10 times resamples with replacement
+  ss <- sample( 1: dim(ozone)[1], replace = T ) 
+  ozone0 <- ozone[ss, ]; ozone0 <- ozone0[ order(ozone0$ozone), ] 
+ # smooth/regression using loess method
+  loess0 <- loess( temperature ~ ozone, data = ozone0, span = 0.2 )
+ # predict new data : ozone from 1: 155
+  ll[i, ] <- predict( loess0, newdata=data.frame(ozone=1:155))
+}
+# 10 times predict for each ozone value
+
+plot( ozone$ozone, ozone$temperature, pch=19, cex=0.5 )
+for ( i in 1:10 ) { lines(1:155, ll[i,], col="grey", lwd=2)}
+lines(1:155, apply(ll, 2, mean), col = "red", lwd =2)
+# red line is the bag of all the grey lines
+
+```
+
+
 
 ## Random Forests (6:49)
 
+```{r}
+rm(list=ls())
+data(iris);library(ggplot2)
+inTrain <- createDataPartition( y= iris$Species, p=0.7, list=F )
+training <- iris[ inTrain, ]
+testing <- iris[ -inTrain, ]
+
+library(caret)
+modFit <- train(Species~., data= training, method ="rf", prox=T )
+modFit
+getTree( modFit$finalModel, k= 2 )
+
+```
 
 ## Boosting (7:08)
 
