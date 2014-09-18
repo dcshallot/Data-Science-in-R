@@ -89,8 +89,44 @@ getTree( modFit$finalModel, k= 2 )
 
 ## Boosting (7:08)
 
+### Basic idea
+1. take lots of weak predictors   
+2. weight them and add them up   
+3. get a stronger predictor   
+adaboost   
+
+### boosting in R
+1. can be used with any subset of classifiers   
+2. one large subclass is gradient boosting   
+3. multiple libraries:   
+  gbm: trees;   
+  mboost: model based boosting;   
+  ada: additive logistic regression;    
+  gamBoost: boosting generalized additive models
+
+```{r}
+rm(list=ls())
+library(ISLR); data(Wage); library(ggplot2);library(caret)
+Wage <- subset(Wage, select = -c(logWage))
+inTrain <- createDataPartition( y=Wage$wage, p = 0.7, list = F)
+training <- Wage[inTrain, ]
+testing <- Wage[-inTrain, ]
+
+modFit <- train(wage ~., method="gbm", data = training, verbose=F)
+print(modFit)
+
+```
+
+### Notes
+A couple of nice tutorials for boosting   
+- www.cc.gatech.edu/~thad/6601-gradAI-fall2013/boosting.pdf   
+- webee.technion.ac.il/people/rmeir/BoostingTutorial.pdf   
+Boosting, random forests and model ensembling are the most common tools to win Kaggle and other prediction contests( netflixprize ).   
 
 ## Model Based Prediction (11:39)
+
+
+
 
 
 
