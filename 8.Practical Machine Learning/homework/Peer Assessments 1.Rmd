@@ -1,5 +1,5 @@
 ---
-title: "Peer Assessments 1"
+title: "Practical Machine Learning Assessments"
 author: "Dingchong"
 date: "Wednesday, September 17, 2014"
 output: html_document
@@ -8,42 +8,36 @@ output: html_document
 # abstract
 ## task
 The goal is to predict the manner in which they did the exercise ("classe" variable in the training set) . You should:   
-1. create a report describing how you built your model,   
-2. how you used cross validation,    
-3. what you think the expected out of sample error is ???   
-4. why you made the choices you did.    
-5. predict 20 different test cases.    
-
-## Submission   
-1. Submission: a link to Github repo with R markdown and compiled HTML file. Text < 2000 words and less than 5 figures.   
-2. Submit your predictions in appropriate format for automated grading, up to 2 times for each problem.   
+1. create a report describing how you built your model: see blow plz   
+2. how you used cross validation: training and test only    
+3. what you think the expected out of sample error is: larger than bagging    
+4. why you made the choices you did: good enough in this problem, so why not make it simple?    
+5. predict 20 different test cases: done.    
 
 ## Procedure   
 1.data preparation: environment settings, train/cv/test data split;    
-2.exploratory and preprocessing : outliers, relations;    
-3.model building;   
-4.
+2.model baseline building: use basic data and method ,run the test data;   
+3.exploratory and preprocessing (if necessary) : data transform and complicated model build;    
+4.predict/forecast and submit the result
 
-# data preparation 
+# Down to work:
+## data preparation 
 set work directory, import raw data and clean. 
-```{r}
+```{r, eval=FALSE }
 setwd("C:/Users/dingchong/Documents/GitHub/datasciencecoursera/8.Practical Machine Learning/homework")
 train <- read.delim("pml-training.csv", sep =",", header = T, na.strings="#DIV/0!")
-fore <- read.csv("pml-testing.csv", header= T , na.strings="#DIV/0!")
 
-# wrong factor to numeric
-for ( i in 8:159) {
+# data prepare
+for ( i in 6:159) {
   train[, i] <- as.numeric(train[,i])
 }
-summary(train)
-# vars with too much NA
 nas <- vector( length= ncol(train))
 for ( i in 1: ncol(train)) {
   nas[i] <- length( which(is.na( train[,i]) ) )
 }
 a <- which( nas <= nrow(train)*0.2 ) 
 train <- train[ , as.numeric(a)]
-rm(a, i, nas)
+train <- train[,-c(1,2,3,4,5)]
 
 # data split
 library(caret)
@@ -51,31 +45,46 @@ set.seed(111)
 inTrain <- createDataPartition( y = train$classe, p=0.6, list=F)
 training <- train[inTrain, ]
 testing <- train[-inTrain, ]
-inTest <- createDataPartition( y = testing$classe, p=0.5, list=F)
-cv <- testing[ inTest, ]
-test <- testing[ -inTest, ]
-rm(inTest, inTrain, testing, train)
 ```
 
-# exploratory and preprocessing
+## modeling 
+```{r, eval=FALSE}
+# tree : not good enough
+m.rpart <- train( classe ~ . , method="rpart", data= training)
+p.rpart <- predict( m.rpart, newdata= testing )
+confusionMatrix( p.rpart, testing$classe)
 
-```{r}
+# rf : best
+library(randomForest)
+m.rf <- randomForest(classe ~ . ,data= training )
+p.rf <- predict( m.rf, testing )
+confusionMatrix( p.rf , testing$classe)
 
-summary(training)
+# adaboost, too slow, never got a result
+# knn, too slow, drop
 
-
-
+# svm, alright
+library(e1071)
+m.svm <- svm( classe ~ ., training   )
+p.svm <- predict( m.svm, testing )
+confusionMatrix( p.svm , testing$classe)
 
 ```
 
+## predict
+```{r, eval=FALSE}
+# forecast data
+fore <- read.csv("pml-testing.csv", header= T , na.strings="#DIV/0!")
+str(fore)
+for ( i in 6:159) {
+  fore[, i] <- as.numeric(fore[,i])
+}
+fore <- fore[,-160]
+fore <- fore[ , paste(names(training[,-122]),sep="," ) ]
+pred <- predict( m.rf, aa )
 
-
-
-```{r}
 # submit the answer
-
-answers = rep("A", 20)
-
+answers = paste(pred)
 pml_write_files = function(x){
   n = length(x)
   for(i in 1:n){
@@ -83,11 +92,6 @@ pml_write_files = function(x){
     write.table(x[i],file=filename,quote=FALSE,row.names=FALSE,col.names=FALSE)
   }
 }
-
 pml_write_files(answers)
 
 ```
-
-
-
-
