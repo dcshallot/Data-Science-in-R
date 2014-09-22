@@ -8,6 +8,13 @@ output: html_document
 # Week 3
 
 ## Predicting with trees (12:51)
+## Bagging (9:13)
+## Random Forests (6:49)
+## Boosting (7:08)
+## Model Based Prediction (11:39)
+
+
+## Predicting with trees (12:51)
 
 ```{r}
 data(iris)

@@ -8,6 +8,17 @@ output: html_document
 #Week 2
 
 ## Caret package (6:16)
+## Data slicing (5:40)
+## Training options (7:15)
+## Plotting predictors (10:39)
+## Basic preprocessing (10:52)
+## Covariate creation (17:31)
+## Preprocessing with principal components analysis (14:07)
+## Predicting with Regression (12:22)
+## Predicting with Regression Multiple Covariates (11:12)
+
+
+## Caret package (6:16)
 
 ```{r}
 library(caret);library(kernlab);data(spam)
