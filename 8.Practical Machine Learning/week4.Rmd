@@ -191,12 +191,86 @@ combPred <- predict( combModFit, predDf)
 
 
 # Forecasting
-
-
+Time series issues, ignored.
 
 # Completed Unsupervised Prediction (4:24)
+Ignored.
 
+# Quiz 4
 
+```{r}
+## Q1, different predictors
+library(ElemStatLearn);data(vowel.train);data(vowel.test) 
+set.seed(33833)
+head(vowel.test)
+vowel.test$y <- as.factor(vowel.test$y)
+vowel.train$y <- as.factor(vowel.train$y)
+library(caret)
+rf <- train( y ~., method ="rf", data = vowel.train)
+gbm <- train( y~., method ="gbm", data = vowel.train )
+rf.p <- predict( rf, vowel.test)
+gbm.p <- predict( gbm, vowel.test)
+confusionMatrix( rf.p, vowel.test$y )
+confusionMatrix( gbm.p, vowel.test$y )
+
+## Q2, combine models
+library(caret)
+library(gbm)
+set.seed(3433)
+library(AppliedPredictiveModeling)
+data(AlzheimerDisease)
+adData = data.frame(diagnosis,predictors)
+inTrain = createDataPartition(adData$diagnosis, p = 3/4)[[1]]
+training = adData[ inTrain,]
+testing = adData[-inTrain,]
+set.seed(62433)
+rf <- train( diagnosis ~., method ="rf", data = training )
+gbm <- train( diagnosis~., method ="gbm", data = training )
+lda <- train( diagnosis~., method ="lda", data = training )
+p.rf <- predict( rf, testing); p.gbm <- predict( gbm, testing); p.lda <- predict( lda, testing)
+# combine predictors
+predDf <- data.frame( p.rf, p.gbm, p.lda, y=testing$diagnosis)
+combModFit <- train( y ~., method="rf", data= predDf ) # 
+combPred <- predict( combModFit, predDf)
+confusionMatrix( combPred, testing$diagnosis)
+confusionMatrix( p.rf, testing$diagnosis)
+confusionMatrix( p.gbm, testing$diagnosis)
+confusionMatrix( p.lda, testing$diagnosis)
+
+## Q3, lasso, weighting of vars
+set.seed(3523)
+library(AppliedPredictiveModeling)
+data(concrete)
+inTrain = createDataPartition(concrete$CompressiveStrength, p = 3/4)[[1]]
+training = concrete[ inTrain,]
+testing = concrete[-inTrain,]
+set.seed(233)
+library(lars)
+lasso.fit <- lars( as.matrix(training[,-9]), training$CompressiveStrength, type="lasso", trace=TRUE)
+plot(lasso.fit, breaks=FALSE)
+legend("topleft", names(training[,-9]), pch=8, lty=1:8, col=1:8)
+
+## Q4
+library(lubridate)  # For year() function below
+dat <- read.csv("~/GitHub/datasciencecoursera/8.Practical Machine Learning/gaData.csv")
+training = dat[year(dat$date) < 2012,]
+testing = dat[(year(dat$date)) > 2011,]
+tstrain = ts(training$visitsTumblr)
+
+## Q5
+set.seed(3523)
+library(AppliedPredictiveModeling)
+data(concrete)
+inTrain = createDataPartition(concrete$CompressiveStrength, p = 3/4)[[1]]
+training = concrete[ inTrain,]
+testing = concrete[-inTrain,]
+set.seed(325)
+library(e1071)
+svm <- svm( CompressiveStrength~., data=training)
+pred <- predict( svm, testing  )
+sqrt( sum( (pred - testing$CompressiveStrength)^2 , na.rm = TRUE ) / nrow(testing) )
+
+```
 
 # References
 ## Statistical Learning: Algorithmic and Nonparametric Approaches
