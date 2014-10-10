@@ -1,20 +1,20 @@
 ---
 title: "Reproducible Research Week1"
 author: "dingchong"
-date: "2014å¹´10æœˆ7æ—¥"
+date: "2014å¹?10æœ?7æ—?"
 output: html_document
 ---
 
 # Week 1
 
-## Introduction  Subtitles
-## Reproducible Research: Concepts and Ideas (part 1) [7:11]
-## Reproducible Research: Concepts and Ideas (part 2) [5:27] 
-## Reproducible Research: Concepts and Ideas (part 3) [3:26] 
-## Scripting Your Analysis [4:36] 
-## Structure of a Data Analysis (part 1) [12:29] 
-## Structure of a Data Analysis (part 2) [17:41]  
-## Organizing Your Analysis [11:05]  
+### Introduction  Subtitles
+### Reproducible Research: Concepts and Ideas (part 1) [7:11]
+### Reproducible Research: Concepts and Ideas (part 2) [5:27] 
+### Reproducible Research: Concepts and Ideas (part 3) [3:26] 
+### Scripting Your Analysis [4:36] 
+### Structure of a Data Analysis (part 1) [12:29] 
+### Structure of a Data Analysis (part 2) [17:41]  
+### Organizing Your Analysis [11:05]  
 
 
 # Structure of a Data Analysis
@@ -32,7 +32,7 @@ Synthesize/ write up results
 Create reporducible code   
 
 ## Exploratory data analysis   
-```{r}
+```{r, warning=FALSE}
 library(kernlab)
 data(spam)
 set.seed(3435)
@@ -43,13 +43,45 @@ testSpam = spam[ trainIndicator == 0, ]
 # summarys, missing data, exploratory plots, clusting...
 head(trainSpam)
 plot( trainSpam$capitalAve ~ trainSpam$type )
-plot( log10(trainSpam$capitalAve +1) ~ trainSpam$type )
+plot( log10(trainSpam$capitalAve +1) ~ trainSpam$type ) # how to show data
 plot( log10(trainSpam[,1:4]+1))
 hCluster = hclust( dist(t(trainSpam[, 1:57])))
 plot(hCluster)
 # statistical prediction / modeling
+trainSpam$numType = as.numeric( trainSpam$type) -1 
+costFunction = function(x,y) sum( x!= (y>0.5))
+cvError = rep(NA, 55)
+library(boot)
+for ( i in 1:55) {
+  lmFormula = reformulate( names(trainSpam)[i], response = "numType")
+  glmFit = glm( lmFormula, family = "binomial", data = trainSpam )
+  cvError[i] = cv.glm( trainSpam, glmFit, costFunction, 2)$delta[2]
+}
 
+## which predictor has minimum cross-validated error?
+names(trainSpam)[ which.min(cvError)]
+## use the best model for the group
+predictionModel = glm( numType ~ charDollar, family = "binomial", data = trainSpam )
 
+## Get predictions on the test set
+predictionTest = predict( predictionModel, testSpam)
+predictedSpam = rep("nonspam", dim(testSpam)[1])
 
+## classify as 'spam' for those with prob > 0.5
+predictedSpam[ predictionModel$fitted > 0.5] = "spam"
+##classification table
+table( predictedSpam, testSpam$type)
 
 ```
+
+# Organizing Your Analysis
+Data: raw / precessed   
+Figures:    
+  <t>exploratory( do not need to be pretty)    
+  <t>final( usually a small subse of original figs; axes,colors to make it clear)    
+R code: raw / final / markdown   
+test: read me / report   
+
+
+
+
