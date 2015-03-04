@@ -97,6 +97,42 @@ myjson <- toJSON(iris, pretty = T )
 myjson
 ```
 
+##7.Using data.table
+data.table包，由c写的所以非常快的subsetting, group, updating
+但是需要稍加学习
+```{r}
+library( data.table)
+DF = data.frame( x = rnorm(9), y = rep( c("a", "b", "c"), each = 3 ), z = rnorm(9) )
+head(DF)
+
+DT = data.table( x = rnorm(9), y = rep( c("a", "b", "c"), each = 3 ), z = rnorm(9) ) 
+head(DT)
+
+tables() # show all datatables in memory
+
+# subsetting
+DT[2, ] 
+DT[DT$y == "a"]
+# subsetting rows, but cannot subsetting cols like dataframe
+DT[ c(2,3) ]
+
+# calculationi values for vars with expressions
+DT[, list( mean(x), sum(z) )]
+DT[, table(y)]
+
+# adding new columes
+DT[ , w := z^2 ]
+
+# multiple operations
+DT[ , m := { tmp <- (x+z); log2(tmp+5 ) } ]
+
+# plyr like operations
+DT[, a := x >0 ]
+DT[, b := mean(x+w), by = a ] # if a is ture then mean...
+
+```
+
+
 ### WEEK2
 
 ##1.read from APIs
