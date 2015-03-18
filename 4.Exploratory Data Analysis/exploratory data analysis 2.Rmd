@@ -1,0 +1,121 @@
+---
+title: "exploratory data analysis 2"
+author: "Dingchong"
+date: "Tuesday, March 17, 2015"
+output: html_document
+---
+
+## WEEK 2
+
+### 1.Latice Plotting System
+
+xyplot: scatterplots, y~ x with condition argument
+
+```{r}
+library(lattice, datasets)
+
+ariquality = transform( airquality , Month = factor(Month))
+xyplot( Ozone ~ Wind | Month, data = ariquality, layout = c(5,1))
+
+# panel functions
+
+
+```
+
+
+bwplot: box-and-whiskers plots( "boxlots")
+historgram
+stripplot : like boxplot but with actual points
+dotplot : plot dots on 'violin strings'
+splom : scatterplot matrix: like pairs in base plotting system
+levelplot, contourplot : "image" data
+
+
+### 2.ggplot2 
+
+basice: qplot()
+```{r}
+library(ggplot2)
+str(mpg)
+
+# 2 vaiable : scatter
+qplot( displ, hwy, data = mpg, color = drv )
+
+qplot( displ, hwy, data = mpg, geom = c("point", "smooth"))
+
+qplot( displ, hwy, data = mpg, geom = c("point", "smooth"), method = "lm")
+
+
+# 1 variable : bar
+qplot( hwy, data = mpg, fill = drv )
+qplot( log(hwy) , data = mpg, fill = drv )
+qplot( log(hwy) , data = mpg, fill = drv, geom = "density" )
+qplot( log(hwy) , data = mpg, color = drv, geom = "density" )
+
+# subsets, with facets
+qplot( displ, hwy, data = mpg, facets = .~drv )
+
+qplot( hwy, data = mpg, facets = .~drv, binwidth =2  ) 
+qplot( hwy, data = mpg, facets = drv~. , binwidth =2  )
+
+
+
+```
+
+basic components of a ggplot2 
+
+A data frame
+aesthetic mappings : how data are mapped to color, size 
+geoms : geometric objects like points, lines, shapes.
+facets: for conditional plots 
+stats : statistical transformations like binning, quantiles, smoothing. 
+scales : what scale an aesthetic map uses ( example : male = red, female = blue ) 
+coordinate system 
+
+
+A notes about axis limits
+
+
+```{r}
+
+testdat = data.frame( x=1:100, y = rnorm(100))
+testdat[50,2] = 100 ## outlier
+plot( testdat$x, testdat$y, type ="l", ylim = c(-3,3))
+
+
+g = ggplot( testdat, aes(x =x, y=y))
+g + geom_line()
+
+# outlier missing
+g = ggplot( testdat, aes(x =x, y=y))
+g + geom_line() + ylim( -3, 3)
+# outlier included
+g = ggplot( testdat, aes(x =x, y=y))
+g + geom_line() + coord_cartesian( ylim = c(-3,3))
+
+```
+
+a full story
+
+```{r}
+
+str(mpg)
+g = ggplot( mpg, aes(x =displ, y= hwy)) 
+g + geom_point( alpha = 1/3 )  + # add points
+  facet_wrap( drv ~ cyl) + # factors in different color
+  geom_smooth( method ="lm", col = "steelblue ") + # smoother
+  theme_bw( base_family = "", base_size = 20 ) + # size, character
+  labs( x = expression( "log" )) + 
+  labs( y = "Nocturnal Symptons") + 
+  labs( title = "MAACS Cohort" )
+
+
+```
+
+
+
+
+
+
+
+

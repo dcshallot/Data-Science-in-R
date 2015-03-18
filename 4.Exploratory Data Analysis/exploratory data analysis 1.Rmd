@@ -2,7 +2,7 @@
 [cousera数据科学]Exploratory Data Analysis 
 ---
 
-## 第1课 向量化运算和debug
+## WEEK 1
 
 ### 1.Introduction
 
@@ -108,6 +108,50 @@ par("mar")
 par("mfrow")
 
 ```
+
+base ploting functions
+
+plot
+lines
+points
+text
+title
+mtext: margin text
+aixs
+
+```{r}
+library(datasets)
+with( airquality , plot( Wind, Ozone))
+title( main = "Ozone and Wind in New York City ") 
+
+# add points
+with( subset(airquality , Month ==5), points( Wind, Ozone, col = "blue")) 
+legend( "topright", pch =1, col = c("blue", "black"), 
+        legend = c("May", "Other Months"))
+
+model = lm(Ozone ~ Wind, airquality )
+abline( model, lwd = 2)
+
+```
+
+multiple base plots
+
+```{r}
+
+par( mfrow = c(1,2), oma = c(0,0,2,0)) # oma outer margine
+
+with( airquality, {
+  plot( Wind, Ozone, main = "Ozone and Wind")
+  plot( Solar.R, Ozone, main = "Ozone and Solar Radiation")
+  mtext( "Ozone and Weather in New York City", outer = TRUE)
+})
+
+
+```
+
+
+### 5.Graphics Devices in R
+
 
 
 
