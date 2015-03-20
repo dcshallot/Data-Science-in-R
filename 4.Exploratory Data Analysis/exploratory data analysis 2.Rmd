@@ -5,7 +5,7 @@ date: "Tuesday, March 17, 2015"
 output: html_document
 ---
 
-## WEEK 2
+## WEEK 2 Lattice and ggplot2
 
 ### 1.Latice Plotting System
 
