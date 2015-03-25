@@ -1,8 +1,11 @@
 ---
-[cousera数据科学]R Programming
+title: "[cousera数据科学]R Programming"
+author: "Dingchong"
+date: "Friday, March 20, 2015"
+output: html_document
 ---
 
-## 第一�? 基础�?
+## 第一??? 基础???
 1.R的对象种类（原子级，只有这几种），对一门语言来说，数据类型是需要首先搞明白的character
 numeric
 interger--这玩意会跟numeric混淆，一般认为要as.numeric一下才好，为什么不知道。这玩意后面跟个L
@@ -10,15 +13,15 @@ complex-- 复数，一般我用不着
 logical --逻辑
 
 2.关于numbers
-Inf 是可以运算的�?1/0 =Inf, 1/Inf =0, 此外还有-Inf的存�?
+Inf 是可以运算的???1/0 =Inf, 1/Inf =0, 此外还有-Inf的存???
 NaN 表示undefined value，”不是一个数字“，比如0/0，或者缺失值，但是这玩意不同于na
 (http://www.cookbook-r.com/Basics/Working_with_NULL_NA_and_NaN/)
 
 
 3.属性attributes，不是所有的object都有全部的属性哈
-names --names向量，row.names,col.names数据�? ，rownames, colnames矩阵，dimnames,矩阵 
+names --names向量，row.names,col.names数据??? ，rownames, colnames矩阵，dimnames,矩阵 
 dimensions ( 矩阵，数组）
-class --这个谁都�?
+class --这个谁都???
 length
 以上这些用attributes（）查看
 4.Fators，存成integer，有label。factor比integer更好懂（有label),比character存储更省空间
@@ -27,7 +30,7 @@ factor ( vector, levels=c(") )
 5.Missing values
 NaN 未定义的数学计算结果，本身也是Na
 Na 更全，integer, character,类型都有
-Na不能�? ==判断，而要用is.na，因为它不是一个真实的值，只是一个placeholder。。�?
+Na不能??? ==判断，而要用is.na，因为它不是一个真实的值，只是一个placeholder。。???
 
 6.Subsetting Lists
 ```{r}
@@ -46,27 +49,27 @@ x[[c(2,1)]]
 
 7.读取数据
 read.table/ read.csv
-readLines, 读取txt文件，通常支持大文件的读入，Rstudio上导入csv/txt的功能代码也是这�?
+readLines, 读取txt文件，通常支持大文件的读入，Rstudio上导入csv/txt的功能代码也是这???
 source  读取R代码
 dget 同上，没用过
 load 读取保存好的工作环境 workspaces，一般来说，原始数据比较大，我喜欢处理好之后存成workspaces，再做的时候读这个
 unserialize 读取二进制的R对象，这干啥的？
 
-8.读取大数据集：内�?/操作系统
-1,500,000 * 120 数据，每个单�?8 bytes =...= 1.34GB内存需�?
-事实上如果要做运算还要大一些，建议内存是数据量�?3�?
+8.读取大数据集：内???/操作系统
+1,500,000 * 120 数据，每个单???8 bytes =...= 1.34GB内存需???
+事实上如果要做运算还要大一些，建议内存是数据量???3???
 
 
-## 第二�? 结构控制,函数�?
+## 第二??? 结构控制,函数???
 
 1.控制结构
 if, else 
-for 固定数目的循�?
+for 固定数目的循???
 while 依照条件循环
-repeat 无条件重�?
+repeat 无条件重???
 break 停止
-next 跳过一�?
-return 返回�?
+next 跳过一???
+return 返回???
 
 2.if
 if () {} else {} / ifelse(  , , )
@@ -81,18 +84,18 @@ for ( i in seq_along( names(iris)) ) { print( names(iris)[i])  }
 
 4. Coding Standards
 Indent your code : 代码要有间隔，尽量在函数之间分开
-Limit the width of your code 80�? columns : 每行不超�?80？字
-此外，关于代码可读性，推荐大作一篇，by思喆�?
+Limit the width of your code 80??? columns : 每行不超???80？字
+此外，关于代码可读性，推荐大作一篇，by思喆???
 http://www.bjt.name/2010/11/google-r-code-style/
 
 5. Scoping Rules of R
 R的namespaces 对函数和非函数是隔离开的，所有可能同时存在一个对象叫Lm，还有一个函数也叫lm
 R使用的是Lexical Scoping（词法域），不同于Dynamic Scoping
-相关资料�?
-在词法作用域的环境中，变量的作用域与其在代码中所处的位置有关。由于代码可以静态决定（运行前就可以决定），所以变量的作用域也可以被静态决定，因此也将该作用域称为静态作用域。在动态作用域的环境中，变量的作用域与代码的执行顺序有关�?
-词法作用域允许程序员根据简单的名称替换就能推导出对象引用，例如常量、参数、函数等。这使得程序员在编写模块化的代码是多么的得心应手。同时，这可能也是动态作用域令人感觉到晦涩的原因之一�?
+相关资料???
+在词法作用域的环境中，变量的作用域与其在代码中所处的位置有关。由于代码可以静态决定（运行前就可以决定），所以变量的作用域也可以被静态决定，因此也将该作用域称为静态作用域。在动态作用域的环境中，变量的作用域与代码的执行顺序有关???
+词法作用域允许程序员根据简单的名称替换就能推导出对象引用，例如常量、参数、函数等。这使得程序员在编写模块化的代码是多么的得心应手。同时，这可能也是动态作用域令人感觉到晦涩的原因之一???
 
-函数可以返回函数�?
+函数可以返回函数???
 ```{r}
 make.power <- function(n) {
   pow <- function(x) {
@@ -108,21 +111,21 @@ square(2)
 
 ```
 
-R使用词法作用域的结果�?
+R使用词法作用域的结果???
 所有对象都要在内存里（ python 也是吗？)——最大的诟病
 其他两个没懂==
 
-6.向量化运算简�?
+6.向量化运算简???
 ```{r}
 x <- 1:4; y<- 6:9
 x*y
 x %*% y
 ```
 
-7.时间和日�?
+7.时间和日???
 日期的class是date
-时间的class有两�? POSIXct(整数)和POSIXlt(list含day of week�?)
-�?1970-01-01开始计�?
+时间的class有两??? POSIXct(整数)和POSIXlt(list含day of week???)
+???1970-01-01开始计???
 ```{r}
 x <- as.Date("1970-01-01") #日期
 x

@@ -1,7 +1,9 @@
 ---
-[cousera数据科学]Exploratory Data Analysis 
+title: "[cousera数据科学]Exploratory Data Analysis "
+author: "Dingchong"
+date: "Friday, March 20, 2015"
+output: html_document
 ---
-
 ## WEEK 1
 
 ### 1.Introduction
