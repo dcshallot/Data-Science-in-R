@@ -7,8 +7,8 @@ R语言数据科学项目——基于行业应用实践
 目标1：教学用；目标2：出书用；目标3：发paper用(￣_￣|||)    
 
 ##目录
-1.The Data Scientist’s Toolbox：包括R语言，github，markdown语言的内容
-2.R Programming：R语言的基础
+1. The Data Scientist’s Toolbox：包括R语言，github，markdown语言的内容
+2. R Programming：R语言的基础
 3.Getting and Cleaning Data：数据获取包括各种数据接口的使用，清洗则是花时间最多的工作   
 4.Exploratory Data Analysis：探索性数据分析，主要是可视化以及一些多维探索方法   
 5.Reproducible Research： 可重复性研究，把“分析”升级为“产品”的关键步骤   
