@@ -9,13 +9,13 @@ R语言数据科学项目——基于行业应用实践
 ##目录
 The Data Scientist’s Toolbox：包括R语言，github，markdown语言的内容   
 R Programming：R语言的基础   
-Getting and Cleaning Data：数据获取包括各种数据接口的使用，清洗则是花时间最多的工作
-Exploratory Data Analysis：探索性数据分析，主要是可视化以及一些多维探索方法
-Reproducible Research： 可重复性研究，把“分析”升级为“产品”的关键步骤
-Statistical Inference： 统计推断，暂时不开始
-Regression Models： 太基础的内容放到下一部分
-Practical Machine Learning： 主要的分类和预测算法
-Developing Data Products：数据产品开发，学习中
+Getting and Cleaning Data：数据获取包括各种数据接口的使用，清洗则是花时间最多的工作   
+Exploratory Data Analysis：探索性数据分析，主要是可视化以及一些多维探索方法   
+Reproducible Research： 可重复性研究，把“分析”升级为“产品”的关键步骤   
+Statistical Inference： 统计推断，暂时不开始   
+Regression Models： 太基础的内容放到下一部分   
+Practical Machine Learning： 主要的分类和预测算法   
+Developing Data Products：数据产品开发，学习中   
 
 ##关于R
 比java,c效率低下的分析用语言，不适合工程应用，也不能独立应付“大数据”（单机百万行的分析建模差不多了）；   
@@ -26,7 +26,7 @@ Developing Data Products：数据产品开发，学习中
 它的方便在于优秀的IDE——Rstudio，集代码、数据、帮助、可视化于一身，非常适合分析师工作；   
 它同linux、hadoop一样是开源世界的产物，属于热爱自由和分享的码农以及伪码农们！   
 你不必费尽心思去破解、去求密码，而可以正大光明的使用它，不用担心谁来追究商业问题，   
-而且，你写的每一行代码，实践的每一个应用，都在为社区做出贡献，这是多么美好的事情╮(￣▽￣")╭    
+而且，你写的每一行代码，每一个应用，都在为社区做出贡献，这是多么美好的事情╮(￣▽￣")╭    
 
 ##关于我
 data葱<http://weibo.com/u/1796401915>
