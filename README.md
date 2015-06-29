@@ -16,6 +16,8 @@ R语言数据科学项目——基于行业应用实践
 7. Regression Models： 太基础的内容放到下一部分
 8. Practical Machine Learning： 主要的分类和预测算法
 9. Developing Data Products：数据产品开发，学习中
+10. Web crawler and NLP: 轻量级爬虫和轻量级自然语言处理
+11. 还有啥。。。
 
 ##关于R
 比java,c效率低下的分析用语言，不适合工程应用，也不能独立应付“大数据”（单机百万行的分析建模差不多了）；   
