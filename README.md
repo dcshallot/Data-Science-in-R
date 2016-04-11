@@ -17,7 +17,7 @@ R语言数据科学项目——基于行业应用实践
 8. Practical Machine Learning： 主要的分类和预测算法
 9. Developing Data Products：数据产品开发，学习中
 10. Web crawler and NLP: 轻量级爬虫和轻量级自然语言处理
-11. time series analysis
+11. Time series analysisT:主要适用于KPI预测的决策参考
 12. 还有啥。。。
 
 ##关于R
