@@ -1,0 +1,261 @@
+---
+title: "Practical Machine Learning week1"
+author: "Dingchong"
+date: "Friday, September 15, 2014"
+output: html_document
+---
+
+#Week 2
+
+## Caret package (6:16)
+## Data slicing (5:40)
+## Training options (7:15)
+## Plotting predictors (10:39)
+## Basic preprocessing (10:52)
+## Covariate creation (17:31)
+## Preprocessing with principal components analysis (14:07)
+## Predicting with Regression (12:22)
+## Predicting with Regression Multiple Covariates (11:12)
+
+
+## Caret package (6:16)
+
+```{r}
+library(caret);library(kernlab);data(spam)
+head(spam)
+# split the data into train and test
+inTrain <- createDataPartition( y = spam$type, p=0.75, list=F)
+training <- spam[inTrain, ]
+testing <- spam[-inTrain, ]
+
+set.seed(32343)
+modelFit <- train(type ~., data=training, method="glm")
+modelFit
+modelFit$finalModel
+predictions <- predict(modelFit, newdata=testing)
+confusionMatrix( predictions, testing$type)
+
+```
+
+## Data slicing (5:40)
+
+```{r}
+set.seed(32323)
+# to do k-fold
+# list= T is easy to use, F to understand
+# returnTrain =T, used for list=T, use orders in origin train set
+folds <- createFolds( y= spam$type, k=10, list=T, returnTrain=T)
+sapply( folds, length)
+
+# resamplling
+folds <- createResample( y= spam$type, times=10, list=T )
+sapply( folds, length)
+folds[[1]][1:10]
+
+# time slices
+# what's for ???
+```
+
+## Training options (7:15)
+
+modelFit <- train(type ~., data=training, method="glm")
+
+train(x, y, method = "rf", 
+  preProcess = NULL, 
+  weights = NULL, --unbalance data
+  metric = ifelse(is.factor(y), "Accuracy", "RMSE"),  
+  maximize = ifelse(metric == "RMSE", FALSE, TRUE),
+  trControl = trainControl(), 
+  tuneGrid = NULL, 
+  tuneLength = 3)
+
+### metric
+Continous outcomes: RMSE/RSquared;   
+Categorical outcomes: Accuracy(Fraction correct)/Kappa;   
+
+### trainControl
+trainControl(method = "boot", # "cv", "LOOCV"(leave one out cv)"
+             seeds = NA, # settle down make it repeatable
+             allowParallel = TRUE # for parallel computing )
+
+## Plotting predictors (10:39)
+
+###notes:   
+Don't use the test set for exploration!   
+###Thins you should be looking for:  
+Imblance in outcomes/predictors   
+Outliers: may need to add variable   
+Groups of points not explained by a predictor   
+Skewed variables: transform needed   
+
+```{r}
+library(ISLR);library(ggplot2);library(caret)
+data(Wage)
+summary(Wage)
+
+inTrain <- createDataPartition( y=Wage$wage, p=0.7, list=F )
+training <- Wage[inTrain, ]
+testing <- Wage[-inTrain, ]
+featurePlot( x=training[,c("age","education","jobclass")], 
+             y=training$wage, plot="pairs")
+# 1v1
+qplot( age, wage, data = training)
+# chunk?
+qplot( age, wage, color=jobclass, data = training)
+# add regression smoothers, group by diff color
+qq <- qplot( age, wage, color=education, data = training)
+qq + geom_smooth( method='lm', formula=y~x )
+# density plots
+qplot(wage, color=education, data=training, geom="density")
+
+```
+
+## Basic preprocessing (10:52)
+why? abnormal, outliers etc...
+
+```{r}
+rm(list=ls()) 
+library(caret);library(kernlab);data(spam)
+inTrain <- createDataPartition( y = spam$type, p=0.75, list=F)
+training <- spam[inTrain, ]
+testing <- spam[-inTrain, ]
+
+hist( training$capitalAve, main="",xlab="ave, capital run length")
+mean( training$capitalAve);sd( training$capitalAve ) # sd too big
+# standardizing_ use train mean & sd !!!
+tranCapAve <-  training$capitalAve
+trainCapAveS <-  (tranCapAve - mean(tranCapAve))/sd(tranCapAve)
+testCapAve <- testing$capitalAve
+testCapAveS <- (testCapAve -  mean(tranCapAve))/sd(tranCapAve)
+
+# box-cox transforms
+preObj <- preProcess( training[,-58], method=c("BoxCox"))
+trainCapAveS <- predict(preObj, training[,-58])$capitalAve
+par(mfrow=c(1,2)); hist(trainCapAveS); qqnorm(trainCapAveS)
+par(mfrow=c(1,1))
+
+```
+
+## Covariate creation (17:31)
+
+### 2 levels of covariate creation
+1.from raw data to covariate: capital letters from each mail, "you" freqs...   
+2.transforming tidy covariates: a^2   
+
+### level1,Raw data -> convariates
+test files: frequency of words, google ngrams, freq of capital letters...   
+images: edges, cornors...   
+people: height, weight...   
+### level2, tidy -> new
+more necessary for glm, svms than classification trees.   
+should be done only on the training set
+the best approach is through exploratory analysis( plot/tables)   
+
+```{r}
+
+library(ISLR);library(ggplot2);library(caret)
+data(Wage)
+summary(Wage)
+inTrain <- createDataPartition( y = Wage$wage, p=0.75, list=F)
+training <- Wage[inTrain, ]
+testing <- Wage[-inTrain, ]
+
+table(training$jobclass)
+# creating dummy variables
+dummies <- dummyVars( wage ~ jobclass, data= training)
+head( predict(dummies, newdata= training))
+
+# removin zero covariates,pass
+nsv <- nearZeroVar( training, saveMetrics=T )
+
+# spline basis
+library(splines)
+bsBasis <- bs(training$age, df=3 )
+bsBasis
+
+```
+
+### notes
+level1 feature creation    
+- science is ky. google "feature extraction for [data type]"   
+- Err on overcreation of features   
+- http://www.cs.nyu.edu/~yann/talks/lecun-ranzato-icml2013.pdf   
+level2 feature creation   
+- exploratory analysisi on the training set for creating them   
+- be careful about overfitting!
+
+## Preprocessing with principal components analysis (14:07)
+
+### Basic PCA idea   
+we should pick this combination to capture the "most information" possible   
+Benefits: reduced number of predictors/ reduced noise( due to averaging )
+```{r}
+rm(list=ls()) 
+library(caret);library(kernlab);data(spam)
+inTrain <- createDataPartition( y = spam$type, p=0.75, list=F)
+training <- spam[inTrain, ]
+testing <- spam[-inTrain, ]
+
+M <- abs( cor(training[,-58]))
+diag(M) <- 0
+which( M > 0.8, arr.ind= T )
+
+names(spam)[c(34,32)]
+plot( spam[,34] , spam[,32])
+
+### PCA/SVD
+
+smallSpam <- spam[ , c(34,32)]
+prComp <- prcomp( smallSpam)
+plot( prComp$x[,1], prComp$x[,2])
+prComp$rotation
+# PCA ON spam data: all x into 2 comp
+typeColor <- ((spam$type =="spam")*1 + 1 )
+prComp <- prcomp( log10(spam[,-58]+1 )) # in case log(0) == -inf
+plot( prComp$x[,1], prComp$x[,2], col=typeColor, xlab="PC1", ylab="PC2")
+
+# preprocessing with PCA
+preProc <- preProcess( log10(training[,-58]+1), method="pca", pacComp=2 )
+trainPC <- predict( preProc, log10(training[,-58]+1))
+modelFit <- train( training$type ~ ., method="glm", data =  trainPC )
+testPC <- predict( preProc, log10( testing[, -58]+1))
+confusionMatrix( testing$type, predict( modelFit, testPC ))
+
+```
+
+## Predicting with Regression (12:22)
+
+
+
+## Predicting with Regression Multiple Covariates (11:12)
+
+factors as different level variables : 
+see the example below, there are 10 predictors!!!   
+```{r}
+rm( list=ls())
+library(ISLR);library(ggplot2);library(caret)
+data(Wage); Wage <- subset( Wage, select = -c(logwage))
+summary(Wage)
+
+inTrain <- createDataPartition( y = Wage$wage, p=0.75, list=F)
+training <- Wage[inTrain, ]
+testing <- Wage[-inTrain, ]
+
+qplot( age, wage, data=training)
+qplot( age, wage, color= jobclass , data=training)
+qplot( age, wage, color= education , data=training)
+
+modFit <- train( wage~ age + jobclass + education, 
+                 method = "lm", data = training )
+# factors as different level variables : there are 10 predictors
+finMod <- modFit$finalModel
+print(modFit)
+
+
+```
+
+
+
+
+
+

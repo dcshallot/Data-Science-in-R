@@ -1,0 +1,41 @@
+Week 1
+
+Prediction motivation (8:26)
+What is prediction? (8:39)
+Relative importance of steps (9:45)
+In and out of sample errors (6:57)
+Prediction study design (9:05)
+Types of errors (10:35)
+Receiver Operating Characteristic (5:03)
+Cross validation (8:20)
+What data should you use? (6:01)
+
+Week 2
+
+Caret package (6:16)
+Data slicing (5:40)
+Training options (7:15)
+Plotting predictors (10:39)
+Basic preprocessing (10:52)
+Covariate creation (17:31)
+Preprocessing with principal components analysis (14:07)
+Predicting with Regression (12:22)
+Predicting with Regression Multiple Covariates (11:12)
+
+Week 3
+
+Predicting with trees (12:51)
+Bagging (9:13)
+Random Forests (6:49)
+Boosting (7:08)
+Model Based Prediction (11:39)
+
+Week 4
+
+Regularized regression (13:20)
+Combining predictors (7:11)
+Forecasting
+Completed Unsupervised Prediction (4:24)
+
+
+
