@@ -10,7 +10,6 @@ output: html_document
 - 1.Hierarchical Clustering 
 - 2.K-Means Clustering
 - 3.Dimensioni Reduction
-- 4.Working with Color in R Plots
 
 
 
@@ -337,9 +336,6 @@ see library(impute)
 function : impute.knn 
 
 
-### 4.Working with Color in R Plots
-
-ÂÔ
 
 
 
