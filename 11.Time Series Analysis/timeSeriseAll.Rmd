@@ -1,0 +1,418 @@
+---
+title: "timeSeriseAll"
+author: "tedding"
+date: "June 15, 2016"
+output: 
+  html_document: 
+    highlight: tango
+    toc: yes
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Environment settings
+```{r}
+setwd('F:/百度云同步盘/2016H1/25.时间序列整理/')
+
+#dir <- iconv(rstudioapi::getActiveDocumentContext()$path, 'utf8','gbk') # win
+#dir <- rstudioapi::getActiveDocumentContext()$path # mac
+#dir <- substr(dir, 1,
+#              gregexpr( '/', dir)[[1]][ length(gregexpr( '/', dir)[[1]])] )
+# setwd(dir)
+
+data <- read.csv('tdata1.csv', header = T )
+data[,1] = as.Date( data[,1])
+head(data)
+```
+
+# data fromation 
+ts is the basic format of time series data in R, zoo&xts are enhanced ones.
+
+```{r}
+data.ts = ts( data$new , frequency = 7 )
+plot(data.ts)
+
+```
+[ts - frequncey](http://robjhyndman.com/hyndsight/seasonal-periods/],the “frequency” is the number of observations per season. Here I think it means 7 data comes to a week unit.)
+
+xts way
+```{r}
+library(xts)
+data.xts = xts( data$new,  data$date) # , frequency = 7
+plot(data.xts)
+```
+
+# view of the data 
+
+extract some time 
+```{r}
+plot( data$new[ months(data$date) == '三月' ], type = 'b', main ='March')
+plot( data$new[ weekdays(data$date) == '星期一' ], type = 'b', main ='Monday')
+```
+
+considering the week days 
+```{r}
+library(forecast)
+seasonplot( data[,2] , ylab="n ", xlab="date", main="online", 
+           s = 7, year.labels=F, year.labels.left=F, col=1:10, pch=19)
+# here s means the same as frequency of ts
+# monthplot( data[,2] ,ylab="xx",xlab="Month",main="Seasonal deviation plot")
+
+```
+
+# extract and transform
+
+## Time series decomposition
+
+A trend exists when there is a long-term increase or decrease in the data.
+A seasonal pattern occurs when a time series is affected by seasonal factors 
+such as the time of the year or the day of the week. 
+A cycle occurs when the data exhibit rises and falls that are not of a fixed period. 
+
+classic  decomposition
+
+```{r}
+plot( decompose( data.ts, type="multiplicative") )
+```
+
+## week effect
+
+```{r}
+summary( aov( data$new ~ weekdays(data$date) ))
+effect.week = aggregate( data$new, by = list(weekday= weekdays(data$date)), mean)
+effect.week$x = effect.week$x/ min(effect.week$x)
+effect.week
+```
+
+## outlier detection - tsoutliers
+
+- IO innovational outlier
+- AO additive outlier
+- LS level shift
+- TC temporary change
+- SLS seasonal level shift
+
+```{r}
+# install.packages(‘tsoutliers’)
+
+library("tsoutliers")
+data(Nile)
+resNile1 <- tso(y = Nile, types = c("AO", "LS", "TC"),
+                tsmethod = "stsm", args.tsmodel = list(model = "local-level"))
+plot(resNile1)
+
+resNile2 <- tso(y = Nile, types = c("AO", "LS", "TC"),
+                remove.method = "bottom-up", tsmethod = "auto.arima",
+                cval = 1.5 ,  # between 3-4, less more points
+                args.tsmethod = list(allowdrift = FALSE, ic = "bic"))
+resNile2
+plot(resNile2)
+```
+
+
+# simple way of forecast framework (too simple to use)
+
+## means 
+forecasting methods and evaluation   
+rwf: Returns forecasts and prediction intervals for a random walk with drift model applied to x.
+```{r}
+
+f.meanf <- meanf(data.ts[1:100],h=7)
+f.rwf <- rwf( data.ts[1:100], drift = T ,h=7)
+
+plot( f.meanf, plot.conf=FALSE, main="Forecasts for quarterly beer production")
+lines( f.rwf$mean,col=2)
+lines( 1:107, data.ts[1:107] )
+legend("topright", lty=1, col=c(4,2),
+       legend=c("Mean method", "Seasonal naive method with drift"))
+
+accuracy( f.meanf, data.ts[101:107] )  
+accuracy( f.rwf, data.ts[101:107] )
+### Mean absolute error
+### Root mean squared error
+
+```
+
+
+Moving averages cannot used for forecast
+
+## STL decomposition 
+Seasonal and Trend decomposition using Loess
+ seasonally adjusted data and re-seasonalizing using the last year of the seasonal component.
+
+```{r}
+stl <- stl( data.ts, s.window = 'periodic' )
+plot( stl ) # difference between decompose ???
+
+plot( data.ts , col="gray", main="Exx", ylab="New orders index", xlab="")
+lines( stl$time.series[,2],col="red",ylab="Trend")
+
+
+```
+
+The two main parameters to be chosen when using STL are the trend window (t.window) and seasonal window (s.window), These control how rapidly the trend and seasonal components can change. Small values allow more rapid change. Setting the seasonal window to be infinite is equivalent to forcing the seasonal component to be periodic (i.e., identical across years).
+```{r}
+
+model.stl <- stl( ts(data$new[1:100], frequency = 7) ,
+               t.window=7, s.window="periodic", robust=TRUE)
+f.stl <- forecast(model.stl, method="naive", h = 7)
+plot( f.stl, ylab="New orders index", 
+     main = "Naive forecast of seasonally adjusted after STL decomposition")
+accuracy( f.stl, data.ts[101:107] )
+
+```
+
+# Arima models
+
+## Stationarity and differencing 
+```{r}
+
+par(mfrow =c(1,2))
+plot( data.ts)
+plot( log(data.ts))
+plot( diff(data.ts, 7))
+plot(diff(log(data.ts),7), xlab="Year",
+  ylab="Annual change in monthly log A10 sales")
+par(mfrow=c(1,1))
+tsdisplay(diff( data.ts ,7))
+
+library(tseries)
+adf.test(data.ts, alternative = "stationary")
+
+
+```
+Large p-values are indicative of non-stationarity, and small p-values suggest stationarity. Using the usual 5% threshold, differencing is required if the p-value is greater than 0.05.
+Sometimes it is just not possible to find a model that passes all the tests.
+
+
+## general arima 
+ARIMA(p,d,q) model 
+
+- p=  order of the autoregressive part;
+- d= degree of first differencing involved;
+- q= order of the moving average part.
+
+some simple arima models 
+
+- White noise	ARIMA(0,0,0)
+- Random walk	ARIMA(0,1,0) with no constant
+- Random walk with drift	ARIMA(0,1,0) with a constant
+- Autoregression	ARIMA(p,0,0)
+- Moving average	ARIMA(0,0,q)
+## modelling procedure
+1.Plot the data. Identify any unusual observations.   
+2.If necessary, transform the data (using a Box-Cox transformation) to stabilize the variance.   
+3.If the data are non-stationary: take first differences of the data until the data are stationary.   
+4.Examine the ACF/PACF: Is an AR(pp) or MA(qq) model appropriate?   
+5.Try your chosen model(s), and use the AICc to search for a better model.   
+6.Check the residuals from your chosen model by plotting the ACF of the residuals, and doing a portmanteau test of the residuals. If they do not look like white noise, try a modified model.   
+7.Once the residuals look like white noise, calculate forecasts.   
+
+example from book :
+```{r}
+library(fpp) # for data source
+eeadj <- seasadj(stl(elecequip, s.window="periodic"))
+plot(eeadj)
+```
+
+1.The big drop in 2008/2009 due to the global economic environment. Otherwise there is nothing unusual about the time plot and there appears to be no need to do any data adjustments.
+2.There is no evidence of changing variance, so we will not do a Box-Cox transformation.
+3.The data are clearly non-stationary . Consequently, we will take a first difference of the data. These look stationary, and so we will not consider further differences.
+```{r}
+tsdisplay(diff(eeadj),main="")
+```
+4.The PACF shown above suggests an AR(3) model. So an initial candidate model is an ARIMA(3,1,0). There are no other obvious candidate models.
+5.We fit an ARIMA(3,1,0) model along with variations including ARIMA(4,1,0), ARIMA(2,1,0), ARIMA(3,1,1), etc. Of these, the ARIMA(3,1,1) has a slightly smaller AICc value.
+
+```{r}
+fit <- Arima(eeadj, order=c(3,1,0))
+fit$aic
+
+fit <- Arima(eeadj, order=c(2,1,1))
+fit$aic
+
+fit <- Arima(eeadj, order=c(3,1,1))
+fit$aic
+```
+
+6. The ACF plot of the residuals from the ARIMA(3,1,1) model shows all correlations within the threshold limits indicating that the residuals are behaving like white noise. 
+```{r}
+Acf(residuals(fit))
+Box.test(residuals(fit), lag=24, fitdf=4, type="Ljung")
+```
+Box-Ljung statistic has a p-value of 0.9 suggests that the daily change is essentially a random amount uncorrelated with previous days(opposite to normal Hypothesis Testing).
+
+7. Forecasts from the chosen model are shown in Figure 8.13.
+```{r}
+plot(forecast(fit))
+```
+
+## Seasonal arima models
+ARIMA(p,d,q)(P,D,Q)
+
+Quarterly retail trade index in the Euro area (17 countries), 1996–2011, covering wholesale and retail trade, and repair of motor vehicles and motorcycles. 
+```{r}
+plot(euretail, ylab="Retail index", xlab="Year")
+```
+
+The data are clearly non-stationary, with some seasonality, so we will first take a seasonal difference. 
+```{r}
+tsdisplay(diff(euretail,4))
+```
+
+These also appear to be non-stationary, and so we take an additional first difference
+```{r}
+tsdisplay(diff(diff(euretail,4)))
+```
+The significant spike at lag 1 in the ACF suggests a non-seasonal MA(1) component, and the significant spike at lag 4 in the ACF suggests a seasonal MA(1) component. Consequently, we begin with an ARIMA(1,1,1)(1,1,1)
+```{r}
+fit <- Arima(euretail, order=c(1,1,1), seasonal=c(1,1,1))
+tsdisplay(residuals(fit))
+```
+All the spikes are now within the significance limits, and so the residuals appear to be white noise.
+```{r}
+fit.season <- Arima(euretail, order=c(1,1,1), seasonal=c(1,1,1))
+res <- residuals(fit.season)
+tsdisplay(res)
+Box.test(res, lag=16, fitdf=4, type="Ljung")
+```
+prediction
+```{r}
+plot(forecast(fit.season, h=12))
+```
+
+We could have used auto.arima() to do most of this work for us. 
+```{r}
+auto.arima(euretail)
+```
+
+auto.arima() takes some short-cuts in order to speed up the computation and will not always give the best model. You can turn the short-cuts off and then it will sometimes return a different model.
+```{r}
+auto.arima(euretail, stepwise=FALSE, approximation=FALSE)
+```
+
+remenber the 1-7 steps? 
+The automated algorithm only takes care of steps 3–5. So even if you use it, you will still need to take care of the other steps yourself.
+
+
+
+## how does auto.arima work
+
+combines unit root tests, minimization of the AICc and MLE to obtain an ARIMA model. 
+ARIMA(p,d,q)
+- The number of differences d is determined using repeated KPSS(unit root test) tests.
+- The values of p and q are then chosen by minimizing the AICc after differencing the data dd times, stepwised. 
+- If d=0 then the constant c is included, or is set to 0.
+
+
+## back to our own data
+```{r}
+plot(data.xts) 
+train <- ts( log(data$new[1:100]), frequency =7 )
+
+fit <- auto.arima( train, seasonal = T, stepwise=FALSE, approximation=FALSE)
+fit
+data.forecast <- forecast(fit, h=20)
+
+plot( data.forecast, include =40 )
+lines( ts( log( data$new[1:120]), frequency=7 ), col ='red')
+legend(x = "topleft", legend = c("Predicted", "Real Data"), 
+       col = c("blue", "red"), lty = c(1, 1))
+
+accuracy( data.forecast, data$new[101:120] )
+```
+
+
+# 不知道有什么卵用，暂时堆在这里
+
+```{r}
+# 
+# library(xts)
+# data <- xts( raw[,-1], order.by= raw[,1], frequency =  7)
+# plot(data);rm(raw)
+# 
+# index = which( .indexwday( train )  %in% c(0,6) )
+# 
+# wkend =   mean( train[ index ] )
+# wkday =   mean( train[ -index ] )
+# 
+# 
+# train = window(data, end = '2015-06-30')
+# # test = window( data, start = '2015-07-01', end = '2015-07-15')
+# test = window( data, start = '2015-07-01' )
+# 
+# # acf, pacf
+# plot( train )
+# 
+# acf(train )
+# pacf( train )
+# Box.test(train)
+# 
+# l =  diff(train)[-1]
+# acf(l)
+# pacf(l)
+# 
+# # arima
+# library( forecast)
+# fit = auto.arima(train )
+# 
+# fit = arima( train, order = c(2,0,0) )
+# 
+# fit = arima( train ,order = c(2,0,0), seasonal=list(order=c(0,1,1),period=7) )
+# 
+# # Exponential smoothing state space model
+# fit = ets(  ts(train, frequency = 7) )
+# 
+# 
+# summary(fit)
+# plot( forecast( fit, 15))
+# 
+# 
+# # plot.nz(fit)
+# fore = xts( forecast( fit, h = length(test) )$mean , order =index(test)  )
+# foree = merge(  test, fore  )
+# plot(as.zoo(foree), main = paste( fit$arma, collapse = "") , 
+#      screens=1, col=c("blue","red"), lty = c("solid","dotted") )
+# legend( "topleft", legend = c("real","fore"), col = c("blue","red"), lty = c("solid","dotted"))
+# 
+# round( (colSums( foree[,1])- colSums( foree[,2])) /colSums( foree[,1]), 2)
+
+```
+
+
+## filter
+```{r}
+
+# 
+# effect.week = aggregate( data$new, by = list(weekday= weekdays(data$date)), mean)
+# effect.week$x = effect.week$x/ min(effect.week$x)
+# effect.week
+# 
+# 
+# data1 <- data
+# for( i in 1:nrow(effect.week) ) {
+#   ind <- effect.week$weekday[i]
+#   data1$nv[weekdays(data$date) == ind] <- 
+#     data$new[ weekdays(data$date) == ind ]/effect.week$x[i]
+# }
+# 
+# data1
+# aindexb <- function(x,y) { value = ifelse( weekdays(x$date)== y$weekday, 
+#                                    x$new/y$)}
+# 
+# data.ts.week
+
+```
+
+
+```{r, results='asis'}
+knitr::kable(mtcars)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+https://www.otexts.org/fpp/6/3
