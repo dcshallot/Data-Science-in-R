@@ -1,0 +1,192 @@
+---
+title: "advanced plot"
+author: "Dingchong"
+date: "Friday, September 26, 2014"
+output: html_document
+---
+
+Purpose:         elegant and powerful data exploration
+Data Used:       iris, VADeaths
+Packages Used:   MASS,RColorBrewer...
+
+# 数据降维
+
+## 调和曲线图
+调和曲线图的思想和傅立叶变换十分相似，是根据三角变换方法将 p 维空间的点映射到二维平面上的曲线上。
+
+```{r}
+
+x = as.matrix(iris[1:4])
+t = seq(-pi, pi, pi/30)
+m = nrow(x)
+n = ncol(x)
+f = matrix(0, m, length(t))
+for (i in 1:m) {
+    f[i, ] = x[i, 1]/sqrt(2)
+    for (j in 2:n) {
+        if (j%%2 == 0)
+            f[i, ] = f[i, ] + x[i, j] * sin(j/2 * t)
+        else f[i, ] = f[i, ] + x[i, j] * cos(j%/%2 * t)
+    }
+}
+plot(c(-pi, pi), c(min(f), max(f)), type = "n", main = "The Unison graph of Iris",
+    xlab = "t", ylab = "f(t)")
+for (i in 1:m) lines(t, f[i, ], col = c("red", "green3",
+    "blue")[unclass(iris$Species[i])])
+legend(x = -3, y = 15, c("setosa", "versicolor", "virginica"),
+    lty = 1, col = c("red", "green3", "blue"))
+
+```
+
+
+
+## 对应分析：两个或多个变量之间的对应关系
+```{r}
+library(MASS)
+head(USPersonalExpenditure )
+cal<-corresp(USPersonalExpenditure,nf=2) ;
+biplot(cal,expand=1.5, xlim=c(-0.5 , 0.5), ylim=c(-0.1 , 0.15))
+abline(v=0,h=0,lty=3) 
+```
+
+# 体现数据的相关性
+
+## 热力图，用于展现相同数值在两个维度上的水平/相关系数
+
+```{r}
+
+### loading packages
+library(gplots)
+library(lattice)
+
+# 简单例子
+a = matrix(1:6, nrow =2 )
+a
+dimnames(a) =list( letters[1:2], LETTERS[1:3] )
+a
+heatmap.2(a, trace = 'none', density.info = "none")
+heatmap.2(a, trace = 'none',  dendrogram = "none" , density.info = "none" )
+
+### 复杂例子
+data(AirPassengers)
+### converting data
+rowcolNames <- list(as.character(1949:1960), month.abb)
+rowcolNames
+
+air_data <- matrix(AirPassengers,
+                   ncol = 12,
+                   byrow = TRUE,
+                   dimnames = rowcolNames)
+air_data
+### drawing heat maps
+
+# 2) Air Passengers #2
+heatmap.2(air_data,
+          trace = "none",
+          density.info = "none",
+          xlab = "month",
+          ylab = "year",
+          main = "Air Passengers #2")
+# 3) Air Passengers #3
+heatmap.2(air_data,
+          trace = "none",
+          xlab = "month",
+          ylab = "year",
+          main = "Air Passengers #3",
+          density.info = "histogram",
+          dendrogram = "column",
+          keysize = 1.8)
+
+```
+
+
+```{r}
+
+library(RColorBrewer)
+data <- VADeaths
+pal=brewer.pal(4,"YlOrRd")
+breaks<-c(0, 15, 26, 44, 72)
+layout(matrix(data=c(1,2),  nrow=1, ncol=2), widths=c(8,1),
+       heights=c(1,1))  ## 画一个空白的图形画板，按照参数把图形区域分隔好
+# 看layout的分割可以这样：
+# xx <- layout(matrix(data=c(1,2),  nrow=1, ncol=2), widths=c(8,1), heights=c(1,1)) ; layout.show(xx)
+par(mar = c(2,6,4,1 ), oma=c(0.1, 0.1 ,0.1 , 0.1), mex = 1.2 ) #Set margins for the heatmap
+image(x=1:nrow(data),
+      y=1:ncol(data),
+      z=data,axes=FALSE,
+      xlab="Month",   ylab="", main="Sales Heat Map" ,
+      col=pal[1:(length(breaks)-1)],
+      breaks=breaks ) # breaks 颜色块对应的数值（数值分组），要比颜色数量多1个
+axis(1, col="white",las=1 , at=1:nrow(data), labels=rownames(data)  )
+axis(2, col="white",las=1 , at=1:ncol(data), labels=colnames(data)  )
+abline(h=c(1:ncol(data))+0.5, v=c(1:nrow(data))+0.5,  col="white",lwd=2,xpd=FALSE)
+# 画标尺
+breaks2 <- breaks[-length(breaks)]  # breaks 少一个
+par(mar = c(2,1,4,2))
+image(x = 1, y= 0:length(breaks2),
+      z=t(matrix(breaks2))*1.001,
+      col=pal[1:length(breaks)-1],
+      axes=FALSE,breaks=breaks,
+      xlab="", ylab="",xaxt="n")
+axis(4,at=0:(length(breaks2)-1), labels=breaks2, col="white", las=1)
+abline(h=c(1:length(breaks2)),col="white",lwd=2, xpd=F )
+dev.off()
+```
+
+
+## 网络图，基于社交关系的数据使这类图越来越火了
+```{r}
+require(igraph)
+
+d = data.frame(p1     = c('a', 'b', 'c'),
+               p2     = c('b', 'c', 'a'),
+               weight = c(1, 2, 4))
+g = graph.data.frame(d, directed = TRUE)
+plot(g, edge.width = E(g)$weight)
+
+
+```
+
+一个更生动的例子<http://cos.name/2012/03/how-to-vote/>
+
+
+## 系统聚类：样本之间的关系疏密——基于空间距离
+```{r}
+dist <-dist(scale(iris[,c(1:4)]))
+hc <- hclust(dist, "ward")
+plclust(hc,hang=-1 ,  labels=iris[,5]  )
+re<-rect.hclust(hc,k=4,border="red")
+```
+
+
+## 列联表数据的内部联系：马赛克图
+
+r in action 上的例子
+```{r}
+library(vcd)
+ftable(Titanic)
+mosaic( Titanic, shade = T, legend = T )
+```
+
+信息：
+
+- 头等舱到船员的存活率差异巨大  
+- 大部分孩子都在三等舱中  
+- 头等舱女性存活率最高  
+- go on and on ...  
+
+# 模型相关
+
+## 决策树
+```{r}
+library(caret)
+inTrain <- createDataPartition( y = iris$Species, p=0.75, list=F)
+training <- iris[inTrain, ]
+testing <- iris[-inTrain, ]
+modFit <- train( Species ~ . , method="rpart", data= training)
+# print( modFit$finalModel)
+library(rattle);library(rpart.plot)
+fancyRpartPlot( modFit$finalModel)
+
+```
+

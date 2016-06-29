@@ -1,0 +1,107 @@
+---
+title: "lattice包展示"
+author: "dingchong"
+date: "August 30, 2015"
+output: 
+ html_document: 
+    highlight: tango
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+
+options(scipen = 1, digits = 2)
+
+knitr::opts_chunk$set(echo = TRUE,
+    fig.height= 8 , fig.width= 10 , dpi = 144, 
+    comment=NA,  warning=FALSE)
+```
+
+## 案例数据
+```{r}
+library( lattice)
+data( "environmental")
+# ?environmental
+head( environmental)
+
+```
+
+## 主函数xyplot
+
+```{r}
+# 和plot类似的功能，显示氧气浓度和辐射量的相关性
+xyplot( ozone ~ radiation, data = environmental, main = ' Ozone vs Radiation')
+
+```
+
+## 加入第三个变量
+
+连续变量分组有两种方式：完全切分和重叠切分。   
+作为condition variable时，有重叠的切分连续变量是有意义的。   
+先看看重叠切分函数equal.count：
+```{r}
+equal.count(1:100,4 ) # overlap = 0 则无重复
+```
+
+用equal.count划分温度区间
+
+```{r}
+summary( environmental$temperature)
+temp.cut = equal.count( environmental$temperature, 4 )
+temp.cut # 
+
+```
+
+在研究氧气浓度和辐射量的时候，考虑不同温度的影响
+```{r}
+xyplot( ozone ~ radiation | temp.cut, data = environmental )
+
+xyplot( ozone ~ radiation | temp.cut, data = environmental , 
+        layout = c(2,2), as.table = T )
+
+# 线性拟合
+xyplot( ozone ~ radiation | temp.cut, data = environmental , 
+        layout = c(2,2),  as.table = T,
+        panel = function(x,y) {
+          panel.xyplot(x,y)
+          fit = lm( y ~ x )
+          panel.abline( fit )
+        } )
+
+# 移动平滑拟合
+xyplot( ozone ~ radiation | temp.cut, data = environmental ,
+        layout = c(2,2),  as.table = T,
+        panel = function(x,y) {
+          panel.xyplot(x,y)
+          panel.loess(x,y)
+        } )
+```
+
+## xyplot很适合表现在第三变量condition variable存在的情况下两变量之间的相关关系 
+
+## 更多的影响因子
+
++风速
+```{r}
+head( environmental,4 )
+wind.cut = equal.count( environmental$wind , 4 )
+wind.cut
+```
+
+```{r}
+xyplot( ozone ~ radiation | temp.cut*wind.cut, data = environmental , as.table = T,
+        panel = function(x,y) {
+          panel.xyplot(x,y)
+          panel.loess(x,y)
+        } )
+```
+
+## 其他类型的图例
+```{r}
+
+splom( ~ environmental) # 散点图矩阵，类似plot/pairs矩阵
+
+histogram( ~ temperature | wind.cut , data = environmental)
+
+```
+
