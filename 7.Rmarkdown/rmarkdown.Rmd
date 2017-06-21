@@ -1,0 +1,110 @@
+---
+title: "about Rmarkdown"
+author: "dingchong"
+date: "2017/6/21"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+markdown常用语法
+
+标题：#
+# 一级标题
+## 二级标题
+### 三级标题
+#### 四级标题
+
+斜体： \_文字\_
+A _paragraph_ here. A code chunk below (remember the three backticks):
+
+加粗： \*\*文字**
+You probably want to try RStudio, or at least the R package **markdown**
+
+代码： \`文字\`
+the function `knitr::knit2html()`.
+
+引用： >内容
+> Markdown is not LaTeX.
+
+链接： \[锚文本](链接地址 )
+See [output here](https://github.com/yihui/knitr-examples/blob/master/001-minimal.md).
+或者直接<http://www.baidu.com>
+
+段落
+单一段落用一个空白行
+连续两个空格 会变成一个<br\>
+
+项目符号：-
+
+项目标题
+
+- 任务1
+- 任务2
+- 任务3
+
+特殊符号
+用\来转义，表示文本中的markdown符号
+
+table美观的表格
+knitr::kable()
+
+====================================
+
+R{ }内参数设置
+eval     运行
+echo     显示代码
+warning=F     不显示警告
+comment=NA      显示结果前面的## 
+results='hide'     不显示console里的运行结果，如summary，对图形无效
+fig.height= 8 , fig.width= 10 , dpi = 144     图片格式放大
+include=FALSE     代码和执行过程都不显示
+
+常用句式
+ ```{r, warning=FALSE, include=FALSE  }     放在头部，setwd，library,read.csv等均不显示任何内容的执行
+
+全局默认设置如下(未验证)
+```{r global_options, echo=FALSE, warning=FALSE, comment=NA }
+knitr::opts_chunk$set(fig.width=12, fig.height=8, fig.path='Figs/',
+                      echo=FALSE, warning=FALSE, message=FALSE)
+```
+
+调整图形参数
+http://stackoverflow.com/questions/17963962/plot-size-and-resolution-with-r-markdown-knitr-pandoc-beamer
+
+调整图形内文字大小
+{r,echo=F,fig.height=14,fig.width=20,dpi=144,comment=NA, dev.args=list(pointsize=25) }
+
+获得文件所在目录位置
+#dir <- iconv(rstudioapi::getActiveDocumentContext()$path, 'utf8','gbk') # win
+#dir <- rstudioapi::getActiveDocumentContext()$path # mac
+#dir <- substr(dir, 1,
+#              gregexpr( '/', dir)[[1]][ length(gregexpr( '/', dir)[[1]])] )
+
+
+
+
+
