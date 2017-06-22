@@ -1,0 +1,19 @@
+---
+title: "environment"
+author: "dingchong"
+date: "2017/6/22"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+获得文件所在目录位置
+# dir <- iconv(rstudioapi::getActiveDocumentContext()$path, 'utf8','gbk') # win
+# dir <- rstudioapi::getActiveDocumentContext()$path # mac
+# dir <- substr(dir, 1,
+#              gregexpr( '/', dir)[[1]][ length(gregexpr( '/', dir)[[1]])] )
+
+
