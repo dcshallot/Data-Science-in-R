@@ -9,11 +9,99 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+# 本地工作路径
 
-获得文件所在目录位置
-# dir <- iconv(rstudioapi::getActiveDocumentContext()$path, 'utf8','gbk') # win
-# dir <- rstudioapi::getActiveDocumentContext()$path # mac
-# dir <- substr(dir, 1,
-#              gregexpr( '/', dir)[[1]][ length(gregexpr( '/', dir)[[1]])] )
+ls() #路径下的对象，有啥算啥，等于rstudio右上workspace里的东西   
+getwd()/ setwd()    
 
+解决路径文件件含中文的问题WIN7有效     
+setwd( enc2utf8('D:/baiduyun/R in tencent/第六章/2013_0527imbalance'))  
+
+##### 获得文件所在目录位置
+
+这个在R脚本可用，在rmd不可用   
+dir <- iconv(rstudioapi::getActiveDocumentContext()$path, 'utf8','gbk') # win  
+dir <- rstudioapi::getActiveDocumentContext()$path # mac  
+dir <- substr(dir, 1,      
+              gregexpr( '/', dir)[[1]][ length(gregexpr( '/', dir)[[1]])] )   
+setwd(dir)
+
+tencent proxy  
+export http_proxy=proxy.tencent.com:8080
+export HTTP_PROXY=proxy.tencent.com:8080
+Sys.setenv(http_proxy='proxy.tencent.com:8080')
+Sys.setenv(http_proxy='web-proxy.oa.com:8080')
+
+
+# 包管理
+
+.rs.rpc.list_packages() #查看已经安装的包
+
+.libPaths() #查看和设定包安装的位置
+
+install.packages("Rwordseg", repos = "http://R-Forge.R-project.org") 
+
+查看包依赖
+
+pack <- available.packages()
+pack["forecast","Depends"]
+
+```{r}
+i <- installed.packages()
+knitr::kable(i[1:3,1:4])
+```
+
+
+# 运行环境 
+
+options(scipen=200,  digits=4 ) # 取消科学计数法，小数4位
+
+##### 内存管理
+rm(list=ls()); #清除内存
+
+memory.size(NA)/ memory.limit()  #当前设置下操作系统能分配给R的最大内存是多少，更改
+
+memory.size(F)  #当前R已使用的内存，
+
+memory.size(T)  #查看已分配的内存（刚开始已使用和已分配同步增加，但垃圾清理，已使用内存减少，而已分配内存不变） 
+[R的内存管理和垃圾清理](http://jliblog.com/archives/276)
+
+# 帮助和查看 
+
+apropos(".test")  #获取所有统计检验的函数
+
+vignette('arules') #打开对应包的帮助文档
+
+str() #对象的属性和内容
+
+attributes( ) #对象的属性
+
+summary( ) #概要
+
+class() #类型
+
+is.na(), is.null(),  #na表缺失值，null表不存在
+
+##### 多对象比较
+
+all.equal(x,y)  #两个对象是否渐进相等
+
+identical(x,y) #严格相等
+
+# 与系统交互 
+
+##### WIN下自动运行
+
+- 创建.bat文件，内容如下
+R CMD BATCH "E:\baiduyun\cyou\2015_cyou_predict_model\model2.0\test.r"
+- 在计划任务里创建新任务，执行.bat文件
+
+###### 调用系统命令
+system('echo \'hello guy!\' ')
+
+这样也可以调用awk，类似
+
+system('your awk command here')
+
+sizes <- read.table(pipe("ls -l /tmp | awk '!/^total/ {print $5}'"))
 
