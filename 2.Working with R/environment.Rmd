@@ -20,11 +20,13 @@ setwd( enc2utf8('D:/baiduyun/R in tencent/第六章/2013_0527imbalance'))
 ##### 获得文件所在目录位置
 
 这个在R脚本可用，在rmd不可用   
-dir <- iconv(rstudioapi::getActiveDocumentContext()$path, 'utf8','gbk') # win  
-dir <- rstudioapi::getActiveDocumentContext()$path # mac  
-dir <- substr(dir, 1,      
-              gregexpr( '/', dir)[[1]][ length(gregexpr( '/', dir)[[1]])] )   
-setwd(dir)
+```{r}
+# dir <- iconv(rstudioapi::getActiveDocumentContext()$path, 'utf8','gbk') # win  
+# dir <- rstudioapi::getActiveDocumentContext()$path # mac  
+# dir <- substr(dir, 1,      
+#             gregexpr( '/', dir)[[1]][ length(gregexpr( '/', dir)[[1]])] )   
+# setwd(dir)
+```
 
 tencent proxy  
 export http_proxy=proxy.tencent.com:8080
@@ -105,3 +107,57 @@ system('your awk command here')
 
 sizes <- read.table(pipe("ls -l /tmp | awk '!/^total/ {print $5}'"))
 
+
+# 代码规范
+
+##### 文件命名
+
+以.r结束的文件，尽可能的增加信息在文件名里面，比如
+
+- Good:predict_ad_revenue.R
+- Bad:foo.R3.
+
+##### 变量名和函数命名规则 
+
+注意，在R环境下，大小写是敏感的
+
+变量：
+
+- Good:               avg_clicks
+- Bad:                avg_Clicks, avgClicks
+
+函数名: 
+
+- Good:     CalculateAvgClicks                     
+- Bad:       calculate_avg_clicks, calculateAvgClicks
+
+##### 字符间隔
+这个可能是最快的，使代码外观变"漂亮"的规则了   
+- Good:tabPrior <- table(df[df$daysFromOpt < 0, "campaignid"])
+- Bad:tabPrior<-table(df[df$daysFromOpt<0,"campaignid"])     
+
+##### 代码组织
+尤其是做项目的话，以下信息是必须有的：   
+1. 版权声明  
+2. 作者注释  
+3. 文件说明，项目目的，输入和输出的说明  
+4. source() 和 library() 说明  
+5. 函数定义  
+6. 其他  
+
+```{r}
+# File-Name:       recommendation_ali_v2.R          
+# Date:            2014-03-27                     
+# Author:          Chong Ding (chong.ding83@gmail.com)
+# Purpose:         Split odata into traindata and testdata--according to the rules change,useless;
+#                  According to algorithm_v2, the code writen last week don't work, so change to binary;
+#                  Nonbuyers add in, still loss consider of buyers with unbuy items!;
+#                  WEEK3 WED
+# Data Used:       odata, testdata
+# Packages Used:   sqldf, reshape2, recommenderlab
+```
+
+养成良好的注释习惯!  
+
+参考资料：
+http://bjt.cos.name/2010/11/google-r-code-style
