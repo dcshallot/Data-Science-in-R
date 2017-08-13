@@ -1,32 +1,32 @@
 ---
-title: "pcuÔ¤²âÏîÄ¿-¿ÉÐÐÐÔÆÀ¹À"
+title: "pcué¢„æµ‹é¡¹ç›®-å¯è¡Œæ€§è¯„ä¼°"
 author: "tedding"
 date: "March 11, 2016"
 output: html_document
 ---
 
-### Ô¤²âÄ¿±ê
+### é¢„æµ‹ç›®æ ‡
 
-- Ä¿±ê£ºÊÖÓÎÏîÄ¿µÄPCU
-- ÖÜÆÚ£ºÉÏÏß2¸öÔÂÒÔÉÏ£¬´¦ÓÚÆ½ÎÈÆÚ
-- Îó²î£ºÉÏÏÂ10%ÒÔÄÚ
-- Ê±Ð§ÐÔ£ºÎ´À´2ÖÜ»ò1¸öÔÂ
+- ç›®æ ‡ï¼šæ‰‹æ¸¸é¡¹ç›®çš„PCU
+- å‘¨æœŸï¼šä¸Šçº¿2ä¸ªæœˆä»¥ä¸Šï¼Œå¤„äºŽå¹³ç¨³æœŸ
+- è¯¯å·®ï¼šä¸Šä¸‹10%ä»¥å†…
+- æ—¶æ•ˆæ€§ï¼šæœªæ¥2å‘¨æˆ–1ä¸ªæœˆ
 
 
-### ¸ÅÊö
-- ÒµÎñ£ºÌìÌì°®Ïû³ý
-- PCUÓë¶à±äÁ¿µÄÏà¹ØÐÔ·ÖÎö
-- »ùÓÚÇ¿Ïà¹Ø±äÁ¿µÄÐÞÕý(¼ÓÈëACU£¬INCOME)
-- Ô¤²â15Ìì£¬½üÒ»ÄêµÄ²âÊÔÆÚ£¬75%µÄÈÕÆÚÔ¤²âÎó²îÔÚÕý¸º10%¸½½ü£¬²¿·ÖÈÕÆÚµÍ¹À
-- Ô¤²â30Ìì£¬ÑµÁ·ÆÚÑÓ³¤£¬ÔòÎó²îÂÊ½üËÆ
+### æ¦‚è¿°
+- ä¸šåŠ¡ï¼šå¤©å¤©çˆ±æ¶ˆé™¤
+- PCUä¸Žå¤šå˜é‡çš„ç›¸å…³æ€§åˆ†æž
+- åŸºäºŽå¼ºç›¸å…³å˜é‡çš„ä¿®æ­£(åŠ å…¥ACUï¼ŒINCOME)
+- é¢„æµ‹15å¤©ï¼Œè¿‘ä¸€å¹´çš„æµ‹è¯•æœŸï¼Œ75%çš„æ—¥æœŸé¢„æµ‹è¯¯å·®åœ¨æ­£è´Ÿ10%é™„è¿‘ï¼Œéƒ¨åˆ†æ—¥æœŸä½Žä¼°
+- é¢„æµ‹30å¤©ï¼Œè®­ç»ƒæœŸå»¶é•¿ï¼Œåˆ™è¯¯å·®çŽ‡è¿‘ä¼¼
 
-### Êý¾ÝËµÃ÷
+### æ•°æ®è¯´æ˜Ž
 
-Ñ¡È¡°®Ïû³ý2015ÖÁ½ñµÄPCUÈÕÊý¾Ý
+é€‰å–çˆ±æ¶ˆé™¤2015è‡³ä»Šçš„PCUæ—¥æ•°æ®
 
 ```{r, echo=FALSE, warning=FALSE , include=FALSE  }
-setwd( enc2utf8('D:/MyDocuments/2016H1/12.PCUmodel') )
-#setwd('/Users/dingchong/Desktop/pcumodel')
+#setwd( enc2utf8('D:/MyDocuments/2016H1/12.PCUmodel') )
+setwd('/Users/dingchong/github/Data-Science-in-R/4.Vasualization')
 library(timeDate)
 library(xts)
 library( forecast)
@@ -42,23 +42,23 @@ wepang$date <- as.Date( wepang$date)
 
 ```
 
-### ¿ò¼ÜÖ¸±êÏà¹Ø¾ØÕó
-pcu¸úACU£¬ÊÕÈëµÈ±äÁ¿Ïà¹ØÐÔ½ÏÇ¿£¬¿ÉÒÔ¿¼ÂÇ¼ÓÈëÐÞÕýÒò×Ó
+### æ¡†æž¶æŒ‡æ ‡ç›¸å…³çŸ©é˜µ
+pcuè·ŸACUï¼Œæ”¶å…¥ç­‰å˜é‡ç›¸å…³æ€§è¾ƒå¼ºï¼Œå¯ä»¥è€ƒè™‘åŠ å…¥ä¿®æ­£å› å­
 ```{r , echo=F, warning=FALSE }
-plot(xts( wepang$pcu, order.by= wepang$date ), main ='PCUÇ÷ÊÆ' ) # pcu Ç÷ÊÆ 
-# ¿ò¼ÜÖ¸±êÏà¹Ø¾ØÕó
+plot(xts( wepang$pcu, order.by= wepang$date ), main ='PCUè¶‹åŠ¿' ) # pcu è¶‹åŠ¿ 
+# æ¡†æž¶æŒ‡æ ‡ç›¸å…³çŸ©é˜µ
 corrplot.mixed( cor(wepang[, names(wepang) %in% 
     c('allreg', 'active','new','income', 'npay', 'acu','pcu', 'left1','left3') ]),
                 lower = 'ellipse', upper = 'number', order = "AOE" )
 dev.off()
 ```
 
-### µ¥Ê±µãÔ¤²â
-Êý¾ÝÇåÏ´´¦Àí:  
+### å•æ—¶ç‚¹é¢„æµ‹
+æ•°æ®æ¸…æ´—å¤„ç†:  
 
-- Ô¤²âÊ±µã2015/05/01
-- ÑµÁ·Ê±³¤90Ìì
-- Ô¤²âÊ±³¤15Ìì
+- é¢„æµ‹æ—¶ç‚¹2015/05/01
+- è®­ç»ƒæ—¶é•¿90å¤©
+- é¢„æµ‹æ—¶é•¿15å¤©
 
 ```{r , echo=FALSE, warning=FALSE  }
 
@@ -77,16 +77,16 @@ rm(split)
 
 ### arima
 ```{r}
-# Ä£ÐÍÊÊÓ¦ÐÔ¼ìÑé
-acf(train) # ×ÔÏà¹ØÏµÊý
-pacf(train) # Æ«×ÔÏà¹ØÏµÊý
-# arimaÄ£ÐÍ
+# æ¨¡åž‹é€‚åº”æ€§æ£€éªŒ
+acf(train) # è‡ªç›¸å…³ç³»æ•°
+pacf(train) # åè‡ªç›¸å…³ç³»æ•°
+# arimaæ¨¡åž‹
 fit <- auto.arima( train )
 summary(fit)
 pred.arima <- forecast(fit, h =  t2 )
 ```
 
-×¼È·ÐÔÆÀ¼Û - arima
+å‡†ç¡®æ€§è¯„ä»· - arima
 ```{r}
 (max( pred.arima$mean )- max(test))/ max(test) # error by mean
 (max(pred.arima$upper[,1])- max(test))/ max(test) # error by upper 80%
@@ -94,7 +94,7 @@ pred.arima <- forecast(fit, h =  t2 )
 pred.orig <- pred.arima$upper[,1]
 ```
 
-ACUÐÞÕý
+ACUä¿®æ­£
 ```{r, echo=F, warning=FALSE  }
 # ccf(wepang$pcu, wepang$acu, lag.max = 10 )
 train.acu <- train.split( wepang, 'acu', t1)[[1]]
@@ -106,7 +106,7 @@ pred.acu <- pred.acu$upper[,1] * median( wepang$pcu/wepang$acu )
 ```
 
 
-incomeÐÞÕý
+incomeä¿®æ­£
 ```{r, echo=F, warning=FALSE  }
 train.inc <- train.split( wepang, 'income', t1)[[1]]
 fit.inc <- auto.arima( train.inc )
@@ -117,21 +117,21 @@ pred.inc <- pred.inc$upper[,1] * median( wepang$pcu/wepang$income )
 ```
 
 
-ÐÞÕýÔ¤²âÖµÆ´×°
+ä¿®æ­£é¢„æµ‹å€¼æ‹¼è£…
 ```{r}
 pred <- ( pred.orig + pred.acu + pred.inc )/3
 (max( pred )- max(test))/ max(test)
 ```
 
 
-½áÂÛ:
-- arimaµÄÇø¼ä¹À¼ÆÔÚÒ»¶ÎÊ±¼äÄÚ¸²¸ÇPCU·åÖµÐ§¹û¸üºÃ£¬¹Ê²ÉÓÃarimaµÄÇø¼ä¹À¼Æ×ö´ó¹æÄ£²âÊÔ
-- ¼ÓÈëÆäËüÖ¸±êµÄÐÞÕýºó£¬PCUÔ¤²âÎó²îµÄ²¨¶¯»á±äÐ¡
+ç»“è®º:
+- arimaçš„åŒºé—´ä¼°è®¡åœ¨ä¸€æ®µæ—¶é—´å†…è¦†ç›–PCUå³°å€¼æ•ˆæžœæ›´å¥½ï¼Œæ•…é‡‡ç”¨arimaçš„åŒºé—´ä¼°è®¡åšå¤§è§„æ¨¡æµ‹è¯•
+- åŠ å…¥å…¶å®ƒæŒ‡æ ‡çš„ä¿®æ­£åŽï¼ŒPCUé¢„æµ‹è¯¯å·®çš„æ³¢åŠ¨ä¼šå˜å°
 
-### ¿çÊ±µãÔ¤²â
+### è·¨æ—¶ç‚¹é¢„æµ‹
 
-#### ²âÊÔ1£ºÑµÁ·90Ìì£¬Ô¤²â15Ìì
-²âÊÔÊ±¼ä·¶Î§£¬Ã¿ÌìÊä³öÔ¤²âÖµ¡¢Êµ¼ÊÖµ¶Ô±ÈÎó²îÂÊ ( pred-act)/act
+#### æµ‹è¯•1ï¼šè®­ç»ƒ90å¤©ï¼Œé¢„æµ‹15å¤©
+æµ‹è¯•æ—¶é—´èŒƒå›´ï¼Œæ¯å¤©è¾“å‡ºé¢„æµ‹å€¼ã€å®žé™…å€¼å¯¹æ¯”è¯¯å·®çŽ‡ ( pred-act)/act
 ```{r}
 t0 = 90 # backward for train
 t2 = 15 # forward for predict
@@ -157,7 +157,7 @@ plot(xts( ttest[3,], order.by= targetdate), ylim = c(-0.4, 0.4 )  )
 
 
 
-#### ²âÊÔ2£ºÑµÁ·90Ìì£¬Ô¤²â30Ìì
+#### æµ‹è¯•2ï¼šè®­ç»ƒ90å¤©ï¼Œé¢„æµ‹30å¤©
 ```{r}
 t0 = 90 # backward for train
 t2 = 30 # forward for predict
@@ -179,7 +179,7 @@ plot(xts( ttest[3,], order.by= targetdate), ylim = c(-0.4, 0.4 )  )
 
 
 
-#### ²âÊÔ3£ºÑµÁ·120Ìì£¬Ô¤²â15Ìì
+#### æµ‹è¯•3ï¼šè®­ç»ƒ120å¤©ï¼Œé¢„æµ‹15å¤©
 ```{r}
 t0 = 120 # backward for train
 t2 = 15 # forward for predict

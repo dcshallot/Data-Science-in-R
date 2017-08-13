@@ -2,17 +2,17 @@
 title: "advanced plot"
 author: "Dingchong"
 date: "Friday, September 26, 2014"
-output: html_document
+output: github_document
 ---
 
 Purpose:         elegant and powerful data exploration
 Data Used:       iris, VADeaths
 Packages Used:   MASS,RColorBrewer...
 
-# Êı¾İ½µÎ¬
+# æ•°æ®é™ç»´
 
-## µ÷ºÍÇúÏßÍ¼
-µ÷ºÍÇúÏßÍ¼µÄË¼ÏëºÍ¸µÁ¢Ò¶±ä»»Ê®·ÖÏàËÆ£¬ÊÇ¸ù¾İÈı½Ç±ä»»·½·¨½« p Î¬¿Õ¼äµÄµãÓ³Éäµ½¶şÎ¬Æ½ÃæÉÏµÄÇúÏßÉÏ¡£
+## è°ƒå’Œæ›²çº¿å›¾
+è°ƒå’Œæ›²çº¿å›¾çš„æ€æƒ³å’Œå‚…ç«‹å¶å˜æ¢ååˆ†ç›¸ä¼¼ï¼Œæ˜¯æ ¹æ®ä¸‰è§’å˜æ¢æ–¹æ³•å°† p ç»´ç©ºé—´çš„ç‚¹æ˜ å°„åˆ°äºŒç»´å¹³é¢ä¸Šçš„æ›²çº¿ä¸Šã€‚
 
 ```{r}
 
@@ -40,7 +40,7 @@ legend(x = -3, y = 15, c("setosa", "versicolor", "virginica"),
 
 
 
-## ¶ÔÓ¦·ÖÎö£ºÁ½¸ö»ò¶à¸ö±äÁ¿Ö®¼äµÄ¶ÔÓ¦¹ØÏµ
+## å¯¹åº”åˆ†æï¼šä¸¤ä¸ªæˆ–å¤šä¸ªå˜é‡ä¹‹é—´çš„å¯¹åº”å…³ç³»
 ```{r}
 library(MASS)
 head(USPersonalExpenditure )
@@ -49,9 +49,9 @@ biplot(cal,expand=1.5, xlim=c(-0.5 , 0.5), ylim=c(-0.1 , 0.15))
 abline(v=0,h=0,lty=3) 
 ```
 
-# ÌåÏÖÊı¾İµÄÏà¹ØĞÔ
+# ä½“ç°æ•°æ®çš„ç›¸å…³æ€§
 
-## ÈÈÁ¦Í¼£¬ÓÃÓÚÕ¹ÏÖÏàÍ¬ÊıÖµÔÚÁ½¸öÎ¬¶ÈÉÏµÄË®Æ½/Ïà¹ØÏµÊı
+## çƒ­åŠ›å›¾ï¼Œç”¨äºå±•ç°ç›¸åŒæ•°å€¼åœ¨ä¸¤ä¸ªç»´åº¦ä¸Šçš„æ°´å¹³/ç›¸å…³ç³»æ•°
 
 ```{r}
 
@@ -59,7 +59,7 @@ abline(v=0,h=0,lty=3)
 library(gplots)
 library(lattice)
 
-# ¼òµ¥Àı×Ó
+# ç®€å•ä¾‹å­
 a = matrix(1:6, nrow =2 )
 a
 dimnames(a) =list( letters[1:2], LETTERS[1:3] )
@@ -67,7 +67,7 @@ a
 heatmap.2(a, trace = 'none', density.info = "none")
 heatmap.2(a, trace = 'none',  dendrogram = "none" , density.info = "none" )
 
-### ¸´ÔÓÀı×Ó
+### å¤æ‚ä¾‹å­
 data(AirPassengers)
 ### converting data
 rowcolNames <- list(as.character(1949:1960), month.abb)
@@ -107,8 +107,8 @@ data <- VADeaths
 pal=brewer.pal(4,"YlOrRd")
 breaks<-c(0, 15, 26, 44, 72)
 layout(matrix(data=c(1,2),  nrow=1, ncol=2), widths=c(8,1),
-       heights=c(1,1))  ## »­Ò»¸ö¿Õ°×µÄÍ¼ĞÎ»­°å£¬°´ÕÕ²ÎÊı°ÑÍ¼ĞÎÇøÓò·Ö¸ôºÃ
-# ¿´layoutµÄ·Ö¸î¿ÉÒÔÕâÑù£º
+       heights=c(1,1))  ## ç”»ä¸€ä¸ªç©ºç™½çš„å›¾å½¢ç”»æ¿ï¼ŒæŒ‰ç…§å‚æ•°æŠŠå›¾å½¢åŒºåŸŸåˆ†éš”å¥½
+# çœ‹layoutçš„åˆ†å‰²å¯ä»¥è¿™æ ·ï¼š
 # xx <- layout(matrix(data=c(1,2),  nrow=1, ncol=2), widths=c(8,1), heights=c(1,1)) ; layout.show(xx)
 par(mar = c(2,6,4,1 ), oma=c(0.1, 0.1 ,0.1 , 0.1), mex = 1.2 ) #Set margins for the heatmap
 image(x=1:nrow(data),
@@ -116,12 +116,12 @@ image(x=1:nrow(data),
       z=data,axes=FALSE,
       xlab="Month",   ylab="", main="Sales Heat Map" ,
       col=pal[1:(length(breaks)-1)],
-      breaks=breaks ) # breaks ÑÕÉ«¿é¶ÔÓ¦µÄÊıÖµ£¨ÊıÖµ·Ö×é£©£¬Òª±ÈÑÕÉ«ÊıÁ¿¶à1¸ö
+      breaks=breaks ) # breaks é¢œè‰²å—å¯¹åº”çš„æ•°å€¼ï¼ˆæ•°å€¼åˆ†ç»„ï¼‰ï¼Œè¦æ¯”é¢œè‰²æ•°é‡å¤š1ä¸ª
 axis(1, col="white",las=1 , at=1:nrow(data), labels=rownames(data)  )
 axis(2, col="white",las=1 , at=1:ncol(data), labels=colnames(data)  )
 abline(h=c(1:ncol(data))+0.5, v=c(1:nrow(data))+0.5,  col="white",lwd=2,xpd=FALSE)
-# »­±ê³ß
-breaks2 <- breaks[-length(breaks)]  # breaks ÉÙÒ»¸ö
+# ç”»æ ‡å°º
+breaks2 <- breaks[-length(breaks)]  # breaks å°‘ä¸€ä¸ª
 par(mar = c(2,1,4,2))
 image(x = 1, y= 0:length(breaks2),
       z=t(matrix(breaks2))*1.001,
@@ -134,7 +134,7 @@ dev.off()
 ```
 
 
-## ÍøÂçÍ¼£¬»ùÓÚÉç½»¹ØÏµµÄÊı¾İÊ¹ÕâÀàÍ¼Ô½À´Ô½»ğÁË
+## ç½‘ç»œå›¾ï¼ŒåŸºäºç¤¾äº¤å…³ç³»çš„æ•°æ®ä½¿è¿™ç±»å›¾è¶Šæ¥è¶Šç«äº†
 ```{r}
 require(igraph)
 
@@ -147,10 +147,10 @@ plot(g, edge.width = E(g)$weight)
 
 ```
 
-Ò»¸ö¸üÉú¶¯µÄÀı×Ó<http://cos.name/2012/03/how-to-vote/>
+ä¸€ä¸ªæ›´ç”ŸåŠ¨çš„ä¾‹å­<http://cos.name/2012/03/how-to-vote/>
 
 
-## ÏµÍ³¾ÛÀà£ºÑù±¾Ö®¼äµÄ¹ØÏµÊèÃÜ¡ª¡ª»ùÓÚ¿Õ¼ä¾àÀë
+## ç³»ç»Ÿèšç±»ï¼šæ ·æœ¬ä¹‹é—´çš„å…³ç³»ç–å¯†â€•â€•åŸºäºç©ºé—´è·ç¦»
 ```{r}
 dist <-dist(scale(iris[,c(1:4)]))
 hc <- hclust(dist, "ward")
@@ -159,25 +159,25 @@ re<-rect.hclust(hc,k=4,border="red")
 ```
 
 
-## ÁĞÁª±íÊı¾İµÄÄÚ²¿ÁªÏµ£ºÂíÈü¿ËÍ¼
+## åˆ—è”è¡¨æ•°æ®çš„å†…éƒ¨è”ç³»ï¼šé©¬èµ›å…‹å›¾
 
-r in action ÉÏµÄÀı×Ó
+r in action ä¸Šçš„ä¾‹å­
 ```{r}
 library(vcd)
 ftable(Titanic)
 mosaic( Titanic, shade = T, legend = T )
 ```
 
-ĞÅÏ¢£º
+ä¿¡æ¯ï¼š
 
-- Í·µÈ²Õµ½´¬Ô±µÄ´æ»îÂÊ²îÒì¾Ş´ó  
-- ´ó²¿·Öº¢×Ó¶¼ÔÚÈıµÈ²ÕÖĞ  
-- Í·µÈ²ÕÅ®ĞÔ´æ»îÂÊ×î¸ß  
+- å¤´ç­‰èˆ±åˆ°èˆ¹å‘˜çš„å­˜æ´»ç‡å·®å¼‚å·¨å¤§  
+- å¤§éƒ¨åˆ†å­©å­éƒ½åœ¨ä¸‰ç­‰èˆ±ä¸­  
+- å¤´ç­‰èˆ±å¥³æ€§å­˜æ´»ç‡æœ€é«˜  
 - go on and on ...  
 
-# Ä£ĞÍÏà¹Ø
+# æ¨¡å‹ç›¸å…³
 
-## ¾ö²ßÊ÷
+## å†³ç­–æ ‘
 ```{r}
 library(caret)
 inTrain <- createDataPartition( y = iris$Species, p=0.75, list=F)

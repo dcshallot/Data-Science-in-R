@@ -2,7 +2,7 @@
 title: "igraph"
 author: "Dingchong"
 date: "Friday, April 17, 2015"
-output: html_document
+output: github_document
 ---
 
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
@@ -11,29 +11,29 @@ When you click the **Knit** button a document will be generated that includes bo
 
 ```{r}
 
-#ÒéÔ±ÊÇÈçºÎÍ¶Æ±µÄ£¿
+#??å‘˜??????æŠ•ç¥¨?æ¨¡?
 
-setwd("C:/Users/dingchong/Documents/GitHub/datasciencecoursera/4.Exploratory Data Analysis")
+setwd("/Users/dingchong/github/Data-Science-in-R/4.Vasualization")
 
 library(spaceExt)
 library(igraph)
-load("senate.RData") #bilINfoÒé°¸Êý¾Ý£¬idlistÒéÔ±Êý¾Ý£¬Í¶Æ±ÐÐÎª£¨696¸öÒé°¸£¬110¸öÒéÔ±£©
-#ÒÆ³ýÍ¶Æ±È±Ê§½Ï¶àµÄÒéÔ±
-sel=which(!(colSums(is.na(voteMatrix))>100))  # É¸Ñ¡³öÍ¶Æ±ÁÐÖÐna²»³¬¹ý100¸öµÄ»áÔ±
-partyD=as.numeric(idList[sel,5]=="D") #±ê¼ÇÊÇµ³ÅÉDµÄÒéÔ±
-partyI=as.numeric(idList[sel,5]=="ID" | idList[sel,5]=="I") #±ê¼ÇÊÇµ³ÅÉI»òÕßIDµÄÒéÔ±
+load("senate.RData") #bilINfo?æ¦˜????è©?idlist??å‘˜???è©?æŠ•ç¥¨??ä¸º??696???æ¦˜???110????å‘˜??
+#?çž¥?æŠ•ç¥¨ç¼ºå¤±?éš™?????å‘˜
+sel=which(!(colSums(is.na(voteMatrix))>100))  # ç­›é€‰??æŠ•ç¥¨????na??????100???å¹•?å‘˜
+partyD=as.numeric(idList[sel,5]=="D") #?????å ‘???D????å‘˜
+partyI=as.numeric(idList[sel,5]=="ID" | idList[sel,5]=="I") #?????å ‘???I????ID????å‘˜
 
-#ÓÃspaceExt×ö¼ÆËã
+#??spaceExt??????
 # A function to achieve covariance selection by glasso with EM, missing data is allowed
 res=glasso.miss(voteMatrix[,sel],20,rho=0.1,penalize.diagonal=FALSE)
 
-#¼ÆËãÆ«Ïà¹ØÏµÊý¾ØÕó
+#????å????ç³»??????
 p=-res$wi
 d=1/sqrt(diag(res$wi))
 p=diag(d)%*%p%*%diag(d)
 diag(p)=0
 
-#igraph°üÉú³ÉÍ¼Ä£ÐÍ¡¢×÷Í¼
+#igraph??????å›¾æ¨¡?æ±€???å›¾
 g=graph.adjacency((p>(0.055)),mode="undirected",diag=F)
 V(g)$color=(partyD+2+partyI*2)
 V(g)$label=idList[sel,3]

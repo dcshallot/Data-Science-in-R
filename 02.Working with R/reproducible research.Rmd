@@ -1,0 +1,95 @@
+---
+title: "Reproducible Research"
+author: "tedding"
+date: "April 12, 2016"
+output: github_document
+---
+
+
+
+
+# Structure of a Data Analysis
+
+##  steps in a data analysis
+Define the question   
+Define the ideal data set   
+Determine what data you can access   
+Obtain the data   
+Clean the data   
+Exploratory data analysis   
+Statistical prediction/modeling   
+Interpret results   
+Challenge results   
+Synthesize/ write up results   
+Create reporducible code   
+
+
+## What to Do and What Not to Do 
+DO : Keep track of your software environment
+```{r}
+sessionInfo()
+```
+
+DON'T : only save the output, save data(data production flow) + code as well  
+DO : set your seed, set.seed()  
+DO : think about the entire pipeline    
+
+- raw data -> processed data -> analysis -> report
+- the more data analysis pipeline you make, the better for everyone
+
+
+## Exploratory data analysis   
+```{r, warning=FALSE}
+library(kernlab)
+data(spam)
+set.seed(3435)
+trainIndicator = rbinom( 4601, size = 1, prob = 0.5)
+table(trainIndicator)
+trainSpam = spam[ trainIndicator ==1, ]
+testSpam = spam[ trainIndicator == 0, ]
+# summarys, missing data, exploratory plots, clusting...
+head(trainSpam)
+plot( trainSpam$capitalAve ~ trainSpam$type )
+plot( log10(trainSpam$capitalAve +1) ~ trainSpam$type ) # how to show data
+plot( log10(trainSpam[,1:4]+1))
+hCluster = hclust( dist(t(trainSpam[, 1:57])))
+plot(hCluster)
+# statistical prediction / modeling
+trainSpam$numType = as.numeric( trainSpam$type) -1 
+costFunction = function(x,y) sum( x!= (y>0.5))
+cvError = rep(NA, 55)
+library(boot)
+for ( i in 1:55) {
+  lmFormula = reformulate( names(trainSpam)[i], response = "numType")
+  glmFit = glm( lmFormula, family = "binomial", data = trainSpam )
+  cvError[i] = cv.glm( trainSpam, glmFit, costFunction, 2)$delta[2]
+}
+
+## which predictor has minimum cross-validated error?
+names(trainSpam)[ which.min(cvError)]
+## use the best model for the group
+predictionModel = glm( numType ~ charDollar, family = "binomial", data = trainSpam )
+
+## Get predictions on the test set
+predictionTest = predict( predictionModel, testSpam)
+predictedSpam = rep("nonspam", dim(testSpam)[1])
+
+## classify as 'spam' for those with prob > 0.5
+predictedSpam[ predictionModel$fitted > 0.5] = "spam"
+##classification table
+table( predictedSpam, testSpam$type)
+
+```
+
+# Organizing Your Analysis
+Data: raw / precessed   
+Figures:    
+  <t>exploratory( do not need to be pretty)    
+  <t>final( usually a small subse of original figs; axes,colors to make it clear)    
+R code: raw / final / markdown   
+test: read me / report   
+
+# ref
+
+- cheatsheet of rmarkdown
+

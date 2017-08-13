@@ -2,12 +2,12 @@
 title: "ggplot2"
 author: "dingchong"
 date: "August 30, 2015"
-output: html_document
+output: github_document
 ---
 
 #ggplot2
 
-## µ¥±äÁ¿
+## å•å˜é‡
 ```{r}
 library(ggplot2)
 # area plot
@@ -15,11 +15,11 @@ sunspotyear <- data.frame(
   year = as.numeric( time(sunspot.year)), 
   sunspots = as.numeric(sunspot.year))
 ggplot( sunspotyear, aes( x=year, y=sunspots)) +
-  geom_area( color="black", fill="blue", alph = 0.9 ) + # alphÍ¸Ã÷¶È
+  geom_area( color="black", fill="blue", alph = 0.9 ) + # alphé€æ˜åº¦
   geom_line()
 ```
 
-# ·Ö×éÃÜ¶ÈÇúÏß
+# åˆ†ç»„å¯†åº¦æ›²çº¿
 ```{r}
 library(MASS)
 birthwt1 <- birthwt
@@ -27,7 +27,7 @@ birthwt1$smoke <- factor( birthwt1$smoke )
 ggplot( birthwt1, aes( x = bwt, color=smoke)) + geom_density( alpha = 0.3)
 ```
 
-##  Èı±äÁ¿: 2ÊıÖµ + 1·ÖÀà 
+##  ä¸‰å˜é‡: 2æ•°å€¼ + 1åˆ†ç±» 
 
 ```{r}
 # data prepare
@@ -55,19 +55,19 @@ meanaggg = aggregate(simData$NumVar1, list(simData$FacVar1, simData$FacVar2), me
 
 
 ```{r}
-## 3Î¬£º2Î¬Á¬Ğø±äÁ¿+1Î¬·ÖÀà±äÁ¿ÓÃÑÕÉ«±íÊ¾
+## 3ç»´ï¼š2ç»´è¿ç»­å˜é‡+1ç»´åˆ†ç±»å˜é‡ç”¨é¢œè‰²è¡¨ç¤º
 ggplot(simData,aes(x=NumVar1,y=NumVar2,color=FacVar1))+geom_point()
 ```
 
 
 ```{r}
-## 3Î¬¶È£º1Î¬ÊıÖµ£¬1Î¬Ê±¼ä+1Î¬·ÖÀàÓÃÑÕÉ«±íÊ¾
+## 3ç»´åº¦ï¼š1ç»´æ•°å€¼ï¼Œ1ç»´æ—¶é—´+1ç»´åˆ†ç±»ç”¨é¢œè‰²è¡¨ç¤º
 simtmpp=simData[,c(4,5,7)]
 simtmppmelt=melt(simtmpp,id=c("NumVar4"))
 ggplot(simtmppmelt,aes(x=NumVar4,y=value,color=variable,group=variable))+
   geom_point()+geom_line()
 
-## ÀàËÆµÄ£¬Ãæ»ı¶Ñ»ıÍ¼
+## ç±»ä¼¼çš„ï¼Œé¢ç§¯å †ç§¯å›¾
 ggplot(simtmppmelt,aes(x=NumVar4,y=value,fill=variable)) + 
   geom_area(position="stack")
 
@@ -78,10 +78,10 @@ ggplot(simtmppmelt,aes(x=NumVar4,y=value,fill=variable)) +
 ```
 
 
-##  Èı±äÁ¿: 1ÊıÖµ + 2·ÖÀà 
+##  ä¸‰å˜é‡: 1æ•°å€¼ + 2åˆ†ç±» 
 
 ```{r}
-## boxplot£º1Î¬ÊıÖµ£¬1Î¬xÖá £¬1Î¬ÑÕÉ«
+## boxplotï¼š1ç»´æ•°å€¼ï¼Œ1ç»´xè½´ ï¼Œ1ç»´é¢œè‰²
 ggplot(simData,aes(x=FacVar2,y=NumVar1, fill=FacVar1))+geom_boxplot()
 
 ```
@@ -90,13 +90,13 @@ ggplot(simData,aes(x=FacVar2,y=NumVar1, fill=FacVar1))+geom_boxplot()
 ```{r}
 
 ## Interaction chart - line chart
-## ¿É·´Ó³²»Í¬ÒòËØµÄ½»»¥×÷ÓÃÓ°Ïì
+## å¯åæ˜ ä¸åŒå› ç´ çš„äº¤äº’ä½œç”¨å½±å“
 ggplot(meanaggg,aes(x=Group.2,y=x,color=Group.1, group=Group.1)) +
   geom_point()+geom_line()
 
 ```
 
-##  Èı±äÁ¿: 3ÊıÖµ
+##  ä¸‰å˜é‡: 3æ•°å€¼
 
 ```{r}
 # Bubble plot - scatter plot of NumVar1 and NumVar2 
@@ -107,12 +107,12 @@ ggplot(simData,aes(x=NumVar1,y=NumVar2,size=NumVar3))+geom_point()
 
 
 ```{r}
-# ´óÁ¿µãµÄ¶Ñ: ·Ö¿éÃÜ¶È-ÑÕÉ«
+# å¤§é‡ç‚¹çš„å †: åˆ†å—å¯†åº¦-é¢œè‰²
 sp <- ggplot( diamonds, aes( x =carat, y= price ))
 sp + stat_bin2d( bins = 50 ) + 
   scale_fill_gradient( low = "lightblue", high = "red", limits=c(0,6000) )
 
-# µÈ¸ßÏß±íÊ¾µãµÄÃÜ¶È
+# ç­‰é«˜çº¿è¡¨ç¤ºç‚¹çš„å¯†åº¦
 p = ggplot( faithful, aes(x = eruptions,  y = waiting ))
 p + geom_point() + stat_density2d( )
 p + stat_density2d( aes(colour = ..level..) )
@@ -120,9 +120,9 @@ p + stat_density2d( aes(colour = ..level..) )
 ```
 
 
-## ËÄÎ¬
+## å››ç»´
 ```{r}
-# ¶à±äÁ¿Í¼£ºÑÕÉ«¡¢Ãæ»ı
+# å¤šå˜é‡å›¾ï¼šé¢œè‰²ã€é¢ç§¯
 head(iris)
 ggplot( iris, aes( x = Petal.Width, y = Sepal.Width, 
                    size = Sepal.Length , color = Species)) + 
@@ -133,7 +133,7 @@ ggplot(meanaggg,aes(x=Group.2,y=x,color=Group.2)) +
   geom_point()+coord_flip()+facet_wrap(~Group.1, ncol=1) 
 ```
 
-## ¹ÉÆ±Êı¾İ
+## è‚¡ç¥¨æ•°æ®
 
 ```{r, eval = F }
 
@@ -166,7 +166,7 @@ ggplot(ibm,aes(Date,Close)) +
 
 ```
 
-¶¯ÆğÀ´
+åŠ¨èµ·æ¥
 ```{r, eval = F }
 
 # Plot with the htmlwidget dygraphs

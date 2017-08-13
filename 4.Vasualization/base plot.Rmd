@@ -2,36 +2,36 @@
 title: "base plot"
 author: "Dingchong"
 date: "Friday, September 26, 2014"
-output: html_document
+output: github_document
 ---
 
 # Abstract
 Update: 2015-03-22  
 Purpose:  
-ÌÖÂÛ³£¼ûÍ¼ĞÎµÄÃüÁî¡¢²ÎÊıºÍĞ§¹û£¬¾¡Á¿ÓÃR»ù´¡¹¦ÄÜÊµÏÖ£¬Ğ§¹û²»Êäexcel   
+è®¨è®ºå¸¸è§å›¾å½¢çš„å‘½ä»¤ã€å‚æ•°å’Œæ•ˆæœï¼Œå°½é‡ç”¨RåŸºç¡€åŠŸèƒ½å®ç°ï¼Œæ•ˆæœä¸è¾“excel   
 Data Used:       iris, VADeaths...    
 Packages Used:   MASS,RColorBrewer    
 
 
-# µ¥±äÁ¿µÄÆµÊı
+# å•å˜é‡çš„é¢‘æ•°
 
-## µ¥±äÁ¿µÄÌõĞÎÍ¼
+## å•å˜é‡çš„æ¡å½¢å›¾
 
 ```{r}
-barplot( airquality$Temp[ airquality$Month ==5 ] ) # È«ÔÂÎÂ¶È£¬ÆäÊµbarplot²»ºÏÊÊ
-barplot(  airquality$Temp[ airquality$Month ==5 ], horiz =T ) # µ÷¹ıÀ´
-barplot(  airquality$Temp[ airquality$Month ==5 ], width = c(1,2) )  # ÏäÌå¿í¶È
-barplot(  airquality$Temp[ airquality$Month ==5 ],border = "red" ,col = 'white')  # ÑÕÉ«
+barplot( airquality$Temp[ airquality$Month ==5 ] ) # å…¨æœˆæ¸©åº¦ï¼Œå…¶å®barplotä¸åˆé€‚
+barplot(  airquality$Temp[ airquality$Month ==5 ], horiz =T ) # è°ƒè¿‡æ¥
+barplot(  airquality$Temp[ airquality$Month ==5 ], width = c(1,2) )  # ç®±ä½“å®½åº¦
+barplot(  airquality$Temp[ airquality$Month ==5 ],border = "red" ,col = 'white')  # é¢œè‰²
 ```
 
 
-## »ùÓÚplotµÄÕ¹Ê¾·½Ê½
+## åŸºäºplotçš„å±•ç¤ºæ–¹å¼
 ```{r}
 plot(  airquality$Temp[ airquality$Month ==5 ], type = 'h')
 ```
 
 
-## ±ıÍ¼
+## é¥¼å›¾
 ```{r}
 # Pie Chart with Percentages
 slices <- c(10, 12, 4, 16, 8) 
@@ -43,59 +43,59 @@ pie(slices,labels = lbls, col=rainbow(length(lbls)),
 ```
 
 
-## Ö±·½Í¼
+## ç›´æ–¹å›¾
 ```{r}
 x <- mtcars$mpg
 
-# ÆµÊı·Ö²¼
+# é¢‘æ•°åˆ†å¸ƒ
 h<-hist(x, breaks=10, col="red", xlab="Miles Per Gallon", 
-        prob=F , # prob = T ÎªÃÜ¶ÈÇúÏß
+        prob=F , # prob = T ä¸ºå¯†åº¦æ›²çº¿
         main="Histogram with Normal Curve") 
-# Ìí¼ÓÄâºÏÇúÏß
+# æ·»åŠ æ‹Ÿåˆæ›²çº¿
 xfit<-seq(min(x),max(x),length=40) 
-yfit<-dnorm(xfit,mean=mean(x),sd=sd(x)) # ÕıÌ¬·Ö²¼¿ÉÒÔÕâÃ´»­£¬ÆäËû·Ö²¼²Î¿¼·Ö²¼º¯Êı
+yfit<-dnorm(xfit,mean=mean(x),sd=sd(x)) # æ­£æ€åˆ†å¸ƒå¯ä»¥è¿™ä¹ˆç”»ï¼Œå…¶ä»–åˆ†å¸ƒå‚è€ƒåˆ†å¸ƒå‡½æ•°
 yfit <- yfit*diff(h$mids[1:2])*length(x) 
 lines(xfit, yfit, col="blue", lwd=2)
 
-# ÀÛ¼Æ·Ö²¼º¯Êı
+# ç´¯è®¡åˆ†å¸ƒå‡½æ•°
 plot(ecdf(x),verticals = TRUE, do.p = FALSE) 
 lines(x, pnorm(x, mean(x), sd(x)), col = "red")
 
-# QQÍ¼
+# QQå›¾
 qqnorm(x); qqline(x, col = "red")
 ```
 
 
 
-# ¶à±äÁ¿Ö®¼äµÄ¹ØÏµ
+# å¤šå˜é‡ä¹‹é—´çš„å…³ç³»
 
 
-## ÏäÏßÍ¼£ºÁ¬Ğø±äÁ¿VSÀëÉ¢±äÁ¿
+## ç®±çº¿å›¾ï¼šè¿ç»­å˜é‡VSç¦»æ•£å˜é‡
 ```{r}
-boxplot( Petal.Length ~ Species , data = iris , outline = F  ) # ÀëÈºÖµ²»ÏÔÊ¾
-boxplot( mpg ~ cyl * gear, data = mtcars , varwidth=T , # ÏäÌå¿í¶ÈÓÉÑù±¾Á¿¾ö¶¨
+boxplot( Petal.Length ~ Species , data = iris , outline = F  ) # ç¦»ç¾¤å€¼ä¸æ˜¾ç¤º
+boxplot( mpg ~ cyl * gear, data = mtcars , varwidth=T , # ç®±ä½“å®½åº¦ç”±æ ·æœ¬é‡å†³å®š
   xlab = "cyl (4-8) * gear (3-5)" )
 
 ```
 
 
-## ÌõĞÎÍ¼£ºÁ¬Ğø±äÁ¿µÄ·Ö×é£¨Á¬Ğø*ÀëÉ¢£©ÌõĞÎÍ¼
+## æ¡å½¢å›¾ï¼šè¿ç»­å˜é‡çš„åˆ†ç»„ï¼ˆè¿ç»­*ç¦»æ•£ï¼‰æ¡å½¢å›¾
 
 ```{r}
-# Í³¼Æ»ã×ÜÌõĞÎÍ¼
+# ç»Ÿè®¡æ±‡æ€»æ¡å½¢å›¾
 l <- aggregate( Sepal.Length ~ Species, data= iris, mean)
-l # Êı¾İÊÇÕâÑùµÄ
+l # æ•°æ®æ˜¯è¿™æ ·çš„
 
 x <- barplot( l[,2] ,  col=terrain.colors(3) , 
       xlim=c(0,5), ylim=c(0,8) ,axe=F, names.arg = l[,1] )
 y <- as.matrix( l[,2] )
 text( x, y+1, labels=l[,2], col="black" ) 
-#Öù¶¥±ê×¢£¬y +nµ÷½Ú±ê×¢¸ß¶È£¬ºá·ÅÍ¼Ôòµ÷x+n
-legend(legend=l[,1], "right", pch=15, col=terrain.colors(3) ) # Í¼Àı
+#æŸ±é¡¶æ ‡æ³¨ï¼Œy +nè°ƒèŠ‚æ ‡æ³¨é«˜åº¦ï¼Œæ¨ªæ”¾å›¾åˆ™è°ƒx+n
+legend(legend=l[,1], "right", pch=15, col=terrain.colors(3) ) # å›¾ä¾‹
 
 ```
 
-## ¶ÑÆöºÍ·Ö×éµÄÌõĞÎÍ¼£ºÁĞÁª±íµÄ¿ÉÊÓ»¯
+## å †ç Œå’Œåˆ†ç»„çš„æ¡å½¢å›¾ï¼šåˆ—è”è¡¨çš„å¯è§†åŒ–
 ```{r}
 l <- table( mtcars$cyl , mtcars$gear);l
 barplot( l, beside=T, main = "car tpyes: cyl and gear", 
@@ -106,7 +106,7 @@ barplot( l, beside=F, main = "car tpyes: cyl and gear",
          legend=c("cyl=4", "cly=6", "cyl=8"))
 ```
 
-## µãÍ¼£ºµ¥±äÁ¿µÄ·ÖÀàÕ¹Ê¾£¬ÊÊºÏÀà±ğºÜ¶àµÄÇé¿ö
+## ç‚¹å›¾ï¼šå•å˜é‡çš„åˆ†ç±»å±•ç¤ºï¼Œé€‚åˆç±»åˆ«å¾ˆå¤šçš„æƒ…å†µ
 ```{r}
 # Dotplot: Grouped Sorted and Colored
 # Sort by mpg, group and color by cylinder 
@@ -122,21 +122,21 @@ dotchart( x$mpg, labels=row.names(x), cex=.7, groups= x$cyl,
 ```
 
 
-## plot×å
-¸ßË®Æ½£¨high-level£©»æÍ¼º¯Êı   
-- ÔÚÍ¼ĞÎÉè±¸ÉÏ²úÉúÒ»¸öĞÂµÄ»æÍ¼ÇøÓò£¬²¢Éú³ÉÒ»¸öĞÂµÄÍ¼ĞÎ
-- Í¨¹ıÆä²ÎÊı¿ÉÒÔÉèÖÃ×ø±êÖá£¬±êÇ©£¬±êÌâµÈµÈ
-µÍË®Æ½£¨low-level£©»æÍ¼º¯Êı   
-- ÔÚÒÑ´æÔÚµÄÍ¼ĞÎÉÏ¼ÓÉÏ¸ü¶àµÄÍ¼ĞÎÔªËØ£¬ÊÇ»æÖÆÍ¼ĞÎµÄ»ù´¡º¯Êı
-- Èç¶îÍâµÄµã¡¢Ïß¡¢¶à±ßĞÎºÍ±êÇ©
-½»»¥Ê½»æÍ¼º¯Êı  
-- ÔÊĞí½»»¥Ê½µØÓÃ¶¨µãÉè±¸£¨ÈçÊó±ê£©ÔÚÒÑ¾­´æÔÚµÄÍ¼ÉÏÌí¼Ó/ÌáÈ¡Í¼ĞÎĞÅÏ¢
+## plotæ—
+é«˜æ°´å¹³ï¼ˆhigh-levelï¼‰ç»˜å›¾å‡½æ•°   
+- åœ¨å›¾å½¢è®¾å¤‡ä¸Šäº§ç”Ÿä¸€ä¸ªæ–°çš„ç»˜å›¾åŒºåŸŸï¼Œå¹¶ç”Ÿæˆä¸€ä¸ªæ–°çš„å›¾å½¢
+- é€šè¿‡å…¶å‚æ•°å¯ä»¥è®¾ç½®åæ ‡è½´ï¼Œæ ‡ç­¾ï¼Œæ ‡é¢˜ç­‰ç­‰
+ä½æ°´å¹³ï¼ˆlow-levelï¼‰ç»˜å›¾å‡½æ•°   
+- åœ¨å·²å­˜åœ¨çš„å›¾å½¢ä¸ŠåŠ ä¸Šæ›´å¤šçš„å›¾å½¢å…ƒç´ ï¼Œæ˜¯ç»˜åˆ¶å›¾å½¢çš„åŸºç¡€å‡½æ•°
+- å¦‚é¢å¤–çš„ç‚¹ã€çº¿ã€å¤šè¾¹å½¢å’Œæ ‡ç­¾
+äº¤äº’å¼ç»˜å›¾å‡½æ•°  
+- å…è®¸äº¤äº’å¼åœ°ç”¨å®šç‚¹è®¾å¤‡ï¼ˆå¦‚é¼ æ ‡ï¼‰åœ¨å·²ç»å­˜åœ¨çš„å›¾ä¸Šæ·»åŠ /æå–å›¾å½¢ä¿¡æ¯
 
 
-### ¼òµ¥É¢µãÍ¼xy
+### ç®€å•æ•£ç‚¹å›¾xy
 ```{r}
 
-# ¼òµ¥Æ¯ÁÁµÄÉ¢µãÍ¼£ºÁ½¸öÁ¬Ğø±äÁ¿Ö®¼äµÄ¹ØÏµ
+# ç®€å•æ¼‚äº®çš„æ•£ç‚¹å›¾ï¼šä¸¤ä¸ªè¿ç»­å˜é‡ä¹‹é—´çš„å…³ç³»
 
 plot(cars$dist~cars$speed, # y~x
      main="Relationship between car distance & speed", #Plot Title
@@ -149,15 +149,15 @@ plot(cars$dist~cars$speed, # y~x
 ```
 
 
-### ÈıÎ¬É¢µãÍ¼(ÀëÉ¢Àà±ğ)
+### ä¸‰ç»´æ•£ç‚¹å›¾(ç¦»æ•£ç±»åˆ«)
 ```{r}
 
-# ·ÖÀàÉ¢µãÍ¼
+# åˆ†ç±»æ•£ç‚¹å›¾
 
 str(iris)
-idx = as.integer(iris[["Species"]]) # ÏÈ½«ğ°Î²»¨µÄÀàĞÍ×ª»¯ÎªÕûÊı1 ¡¢2 ¡¢3£¬±ãÓÚÊ¹ÓÃÏòÁ¿
-plot(iris[, 3:4],   # Êı¾İ³¤ºÍ¿í
-     pch = c(24, 21, 25)[idx],  # ×¢ÒâÕâÀïintegerµÄÓÃ·¨
+idx = as.integer(iris[["Species"]]) # å…ˆå°†é¸¢å°¾èŠ±çš„ç±»å‹è½¬åŒ–ä¸ºæ•´æ•°1 ã€2 ã€3ï¼Œä¾¿äºä½¿ç”¨å‘é‡
+plot(iris[, 3:4],   # æ•°æ®é•¿å’Œå®½
+     pch = c(24, 21, 25)[idx],  # æ³¨æ„è¿™é‡Œintegerçš„ç”¨æ³•
      col = c("black","red", "blue")[idx], 
      panel.first = grid())
 legend("topleft", 
@@ -166,7 +166,7 @@ legend("topleft",
        pch = c(24, 21, 25), bty = "n")
 
 
-## matplot ·ÖÀàÉ¢µãÍ¼£¬Ç¿»¯Àà±ğ²îÒìµÄ±íÏÖ
+## matplot åˆ†ç±»æ•£ç‚¹å›¾ï¼Œå¼ºåŒ–ç±»åˆ«å·®å¼‚çš„è¡¨ç°
 nam.var <- colnames(iris)[-5]
 nam.spec <- as.character(iris[1+50*0:2, "Species"])
 iris.S <- array(NA, dim = c(50,4,3),
@@ -179,7 +179,7 @@ matplot(iris.S[, "Petal.Length",], iris.S[, "Petal.Width",], pch = "SCV",
         main = "Fisher's Iris Data")
 
 
-## ¶şÎ¬±äÁ¿ÌåÏÖÀà±ğ²îÒìµÄÕ¹ÏÖ·½Ê½
+## äºŒç»´å˜é‡ä½“ç°ç±»åˆ«å·®å¼‚çš„å±•ç°æ–¹å¼
 
 library(car)
 class = as.character( iris$Species)
@@ -191,15 +191,15 @@ scatterplot( Sepal.Length ~ Sepal.Width ,data = iris ,
 
 
 ## coplot
-coplot()º¯ÊıÄÜ¹»ËµÃ÷ÈıÏòÉõÖÁËÄÏò¹ØÏµ  
-ËüÌØ±ğÓÚÊÊºÏ¹Û²ìµ±¸ø¶¨ÆäËûÔ¤²â±äÁ¿Ê±£¬·´Ó¦±äÁ¿ÈçºÎ¸ù¾İÒ»¸öÔ¤²â±äÁ¿±ä»¯¡£
+coplot()å‡½æ•°èƒ½å¤Ÿè¯´æ˜ä¸‰å‘ç”šè‡³å››å‘å…³ç³»  
+å®ƒç‰¹åˆ«äºé€‚åˆè§‚å¯Ÿå½“ç»™å®šå…¶ä»–é¢„æµ‹å˜é‡æ—¶ï¼Œååº”å˜é‡å¦‚ä½•æ ¹æ®ä¸€ä¸ªé¢„æµ‹å˜é‡å˜åŒ–ã€‚
 ```{r}
 coplot( mtcars$wt ~ mtcars$mpg | as.factor(mtcars$cyl) * as.factor(mtcars$vs), 
   main="", xlab="", ylab="", pch=19)
 ```
 
 
-## ¶à±äÁ¿µÄÉ¢µãÍ¼¾ØÕó
+## å¤šå˜é‡çš„æ•£ç‚¹å›¾çŸ©é˜µ
 
 ```{r}
 pairs( ~ Sepal.Length + Sepal.Width + Petal.Length +Petal.Width, data=iris)
@@ -208,9 +208,9 @@ plot(  ~ Sepal.Length + Sepal.Width + Petal.Length +Petal.Width, data=iris )
 ```
 
 
-# ÆäËûÍ¼ĞÎ
+# å…¶ä»–å›¾å½¢
 
-## ÓÃÉ¢µãÍ¼±íÊ¾Ê±¼äĞòÁĞÊı¾İ
+## ç”¨æ•£ç‚¹å›¾è¡¨ç¤ºæ—¶é—´åºåˆ—æ•°æ®
 ```{r}
 data <- VADeaths
 plot(data[,1] ,type="b" , lwd =2, xaxt="n" , ylim=c(0, 75) ,
@@ -226,7 +226,7 @@ grid()
 ```
 
 
-## º¯ÊıÍ¼
+## å‡½æ•°å›¾
 ```{r}
 y1 <- function(x) {
   (2*x+sqrt(5-21*x^2))/5
@@ -241,7 +241,7 @@ curve(y1, low, high, ylim=c(low, high))
 curve(y2, low, high, add=T)
 ```
 
-## Ëæ»úµãµÄÒÕÊõ×÷Æ·
+## éšæœºç‚¹çš„è‰ºæœ¯ä½œå“
 ```{r}
 par(mar = c(0.2, 0.2, 0.2, 0.2), mfrow = c(2, 2))
 for (n in c(63, 60, 76, 74)) {
@@ -258,14 +258,14 @@ for (n in c(63, 60, 76, 74)) {
 
 ```
 
-## ¶à±ßĞÎ   
-ÓÃ¿Õplot´î½¨¿ò¼Ü£¬lineÃè½á¹¹£¬polygonÌîÄÚÈİ   
+## å¤šè¾¹å½¢   
+ç”¨ç©ºplotæ­å»ºæ¡†æ¶ï¼Œlineæç»“æ„ï¼Œpolygonå¡«å†…å®¹   
 ```{r}
 col1 = "red";col2="blue";col3="green"
-par( bg="grey25" ) #±³¾°
+par( bg="grey25" ) #èƒŒæ™¯
 plot( x=c(1), y=c(2.5), col="gray27", xlim=c(0,5), ylim=c(0,10),
-      axes=F,ann=F,pch=20)#×ø±ê
-#»­Ïß
+      axes=F,ann=F,pch=20)#åæ ‡
+#ç”»çº¿
 lines(c(1,1),c(2.5,8),col=col1,lwd=5);
 lines(c(2,2),c(2.5,8),col=col1,lwd=5);
 lines(c(2,2),c(0,2.5),col=col2,lwd=5);
@@ -277,7 +277,7 @@ lines(c(4,4),c(3.5,4.8),col=col3,lwd=5);
 lines(c(4,4),c(4.8,6.2),col=col1,lwd=5);
 lines(c(4,4),c(6.2,7.2),col=col2,lwd=5);
 lines(c(4,4),c(7.2,8),col=col1,lwd=5);
-#»­¾ØÕó
+#ç”»çŸ©é˜µ
 polygon(c(1,2,2,1),c(2.5,2.5,8,8),col=col1,border=col1,density=c(100));
 polygon(c(2,3,3,2),c(6,6,8,8),col=col1,border=col1,density=c(100));
 polygon(c(3,4,4,3),c(6,4.8,6.2,7.2),col=col1,border=col1,density=c(100));
@@ -286,17 +286,17 @@ polygon(c(2,3,3,2),c(0,2,4.7,2.5),col=col1,border=col1,density=c(100));
 polygon(c(3,4,4,3),c(2,1,3.5,4.7),col=col2,border=col2,density=c(100));
 polygon(c(3,4,4,3),c(2,1,3.5,4.7),col=col2,border=col2,density=c(100));
 polygon(c(3,4,4,3),c(4.7,3.5,4.8,6),col=col3,border=col3,density=c(100));
-#ÎÄ×Ö
+#æ–‡å­—
 text(c(1:4),c(8.5),labels=c(paste("version",1:4,sep="")),col="white");
 text( 0.5 ,c(1.0,0.5,0),labels=c("mary","suzanne","martin"),col=c(col1,col2,col3));
 
 ```
 
-# ²ÎÊı²Î¿¼
+# å‚æ•°å‚è€ƒ
 
-## ÍæÈ«¾Ö²ÎÊı
+## ç©å…¨å±€å‚æ•°
 
-ÏßÌõĞÎ×´¶¨Òå
+çº¿æ¡å½¢çŠ¶å®šä¹‰
 ```{r}
 par("lty") 
 ```
@@ -330,7 +330,7 @@ dev.off()
 ```
 
 
-## ÍæÏßÌõĞÎ×´
+## ç©çº¿æ¡å½¢çŠ¶
 ```{r}
 x <- c(1:5); y <- x # create some data 
 par(pch=22, col="red") # plotting symbol and color 
@@ -345,49 +345,49 @@ for(i in 1:length(opts)){
 
 ```
 
-## ÍæÑÕÉ«
+## ç©é¢œè‰²
 ```{r}
 library( RColorBrewer)
-display.brewer.all(n=10, exact.n=FALSE) # µ÷É«°å
-col= brewer.pal( n  ,"Set1") # ÒıÓÃÑÕÉ«
+display.brewer.all(n=10, exact.n=FALSE) # è°ƒè‰²æ¿
+col= brewer.pal( n  ,"Set1") # å¼•ç”¨é¢œè‰²
 ```
 
-## Íæ×ø±êÖá
+## ç©åæ ‡è½´
 ```{r}
 x <- c(1:10); y <- x; z <- 10/x
-# ÎªÒ»¸ö×ø±êÔÚÓÒ±ß´´½¨¶îÍâÒ³±ß¿Õ¼ä 
+# ä¸ºä¸€ä¸ªåæ ‡åœ¨å³è¾¹åˆ›å»ºé¢å¤–é¡µè¾¹ç©ºé—´ 
 par(mar=c(5, 4, 4, 8) + 0.1)
-# »æÖÆ x Ïà¶Ô y 
+# ç»˜åˆ¶ x ç›¸å¯¹ y 
 plot(x, y,type="b", pch=21, col="red", 
      yaxt="n", lty=3, xlab="", ylab="")
-# Ìí¼Ó x Ïà¶Ô 1/x 
+# æ·»åŠ  x ç›¸å¯¹ 1/x 
 lines(x, z, type="b", pch=22, col="blue", lty=2)
-# ÔÚ×ó±ß»­Ò»ÌõÖáÏß 
+# åœ¨å·¦è¾¹ç”»ä¸€æ¡è½´çº¿ 
 axis(2, at=x,labels=x, col.axis="red", las=0)
-# ÓÃĞ¡×ÖÌå±ê¼ÇÔÚÓÒ±ß»­Ò»ÌõÖáÏß
+# ç”¨å°å­—ä½“æ ‡è®°åœ¨å³è¾¹ç”»ä¸€æ¡è½´çº¿
 axis(4, at=z,labels=round(z,digits=2),
      col.axis="blue", las=2, cex.axis=0.7, tck=-.01)
-# ÎªÓÒ±ßÖáÏßÌí¼Ó±êÌâ 
+# ä¸ºå³è¾¹è½´çº¿æ·»åŠ æ ‡é¢˜ 
 mtext("y=1/x", side=4, line=3, cex.lab=1,las=2, col="blue")
-# Ìí¼ÓÖ÷±êÌâ£¬µ×ºÍ×óÖá±êÇ© 
+# æ·»åŠ ä¸»æ ‡é¢˜ï¼Œåº•å’Œå·¦è½´æ ‡ç­¾ 
 title("An Example of Creative Axes", xlab="X values",
       ylab="Y=X")
 
 ```
 
-## Íæ¸¨ÖúÏßºÍÍ¼Àı
+## ç©è¾…åŠ©çº¿å’Œå›¾ä¾‹
 ```{r}
-plot(1:10, type = "n", xlim = c(0, 20), ylim = c(0, 20)) # ²»×÷Í¼£¬Ö»»­³ö¿ò¼Ü£¬ÇÒÖ¸¶¨×ø±êÖá·¶Î§
-lines(1:10, abs(rnorm(10)))  # 10¸öÕıÌ¬Ëæ»úÊı¾ø¶ÔÖµµÄ²¨¶¯Ïß
-# ²»Í¬µÄÖ±Ïß
+plot(1:10, type = "n", xlim = c(0, 20), ylim = c(0, 20)) # ä¸ä½œå›¾ï¼Œåªç”»å‡ºæ¡†æ¶ï¼Œä¸”æŒ‡å®šåæ ‡è½´èŒƒå›´
+lines(1:10, abs(rnorm(10)))  # 10ä¸ªæ­£æ€éšæœºæ•°ç»å¯¹å€¼çš„æ³¢åŠ¨çº¿
+# ä¸åŒçš„ç›´çº¿
 abline(a = 0, b = 1, col = "gray")
 abline(v = 2, lty = 2)
 abline(h = 2, lty = 2)
-#Ìí¼ÓÎÄ±¾
+#æ·»åŠ æ–‡æœ¬
 text(8, 3, "abline(a = 0, b = 1)")
-# Ìí¼Ó¼ıÍ·
+# æ·»åŠ ç®­å¤´
 arrows(8, 3.5, 6, 5.7, angle = 40)
-# ²ÎÊıÓÃÁËÏòÁ¿£º²»Í¬»Ò¶ÈµÄÏß¶Î
+# å‚æ•°ç”¨äº†å‘é‡ï¼šä¸åŒç°åº¦çš„çº¿æ®µ
 segments(rep(3, 4), 6:9, rep(5, 4), 6:9, col = gray(seq(0.2, 0.8, length = 4)))
 text(4, 9.8, "segments")
 
@@ -400,90 +400,90 @@ ______________________________________________________________
 
 
 
-## ÎÄ±¾ºÍ·ûºÅ´óĞ¡
+## æ–‡æœ¬å’Œç¬¦å·å¤§å°
 cex
-- cex.axis ×ø±êÖá¿Ì¶È±ê¼ÇµÄËõ·Å±ÈÀı
-- cex.lab ×ø±êÖá±êÌâµÄËõ·Å±ÈÀı
-- cex.main Ö¸¶¨Ö÷±êÌâµÄËõ·Å±ÈÀı
-- cex.sub ×Ó±êÌâµÄËõ·Å±ÈÀı
+- cex.axis åæ ‡è½´åˆ»åº¦æ ‡è®°çš„ç¼©æ”¾æ¯”ä¾‹
+- cex.lab åæ ‡è½´æ ‡é¢˜çš„ç¼©æ”¾æ¯”ä¾‹
+- cex.main æŒ‡å®šä¸»æ ‡é¢˜çš„ç¼©æ”¾æ¯”ä¾‹
+- cex.sub å­æ ‡é¢˜çš„ç¼©æ”¾æ¯”ä¾‹
 
-## µãÀàĞÍ
-pch ÕùÈ¡»­Ò»ÕÅ¸÷ÀàĞÍµÄµãÍ¼³öÀ´
+## ç‚¹ç±»å‹
+pch äº‰å–ç”»ä¸€å¼ å„ç±»å‹çš„ç‚¹å›¾å‡ºæ¥
 
 lty(Line TYpe)
-²ÎÊıÖµ¿ÉÒÔÎªÕûÊı»ò×Ö·û´®£º0=blank, 1=solid (default), 2=dashed, 3=dotted, 4=dotdash, 5=longdash, 6=twodash
+å‚æ•°å€¼å¯ä»¥ä¸ºæ•´æ•°æˆ–å­—ç¬¦ä¸²ï¼š0=blank, 1=solid (default), 2=dashed, 3=dotted, 4=dotdash, 5=longdash, 6=twodash
 
 lwd(Line WiDth)
-ÉèÖÃÏßÌõµÄÏà¶Ô¿í¶È£¬Ä¬ÈÏÖµÎª1
+è®¾ç½®çº¿æ¡çš„ç›¸å¯¹å®½åº¦ï¼Œé»˜è®¤å€¼ä¸º1
 
 
 col
-Ä¬ÈÏµÄ»æÍ¼ÑÕÉ«
+é»˜è®¤çš„ç»˜å›¾é¢œè‰²
 col.axis
-×ø±êÖá¿Ì¶È±ê¼ÇµÄÑÕÉ«
+åæ ‡è½´åˆ»åº¦æ ‡è®°çš„é¢œè‰²
 col.lab
-×ø±êÖá±êÌâµÄÑÕÉ«
+åæ ‡è½´æ ‡é¢˜çš„é¢œè‰²
 col.main
-Ö÷±êÌâµÄÑÕÉ«
+ä¸»æ ‡é¢˜çš„é¢œè‰²
 col.sub
-×Ó±êÌâµÄÑÕÉ«
+å­æ ‡é¢˜çš„é¢œè‰²
 fg
-ÉèÖÃÇ°¾°É«
+è®¾ç½®å‰æ™¯è‰²
 bg
-ÉèÖÃ±³¾°É«
+è®¾ç½®èƒŒæ™¯è‰²
 
 
-font 1=ÆÕÍ¨, 2=´ÖÌå, 3=Ğ±Ìå, 4=´ÖĞ±Ìå, 5=·ûºÅ×ÖÌå
-font.axis ×ø±êÖá¿Ì¶È±êÇ©µÄ×ÖÌåÑùÊ½
-font.lab ×ø±êÖá±êÌâµÄ×ÖÌå
-font.main/font.sub Ö÷±êÌâ/×Ó±êÌâµÄ×ÖÌå
-family ×ÖÌå×å£¬±ê×¼Öµ°üº¬¡°serif¡±, ¡°sans¡±, ¡°mono¡±, ¡°symbol¡±£¬ÆäÓ³ÉäÒÀÀµÓÚ¾ßÌåµÄÉè±¸£¬ÔÚWindowsÉèÖÃÖĞ£¬·Ö±ğ±»Ó³ÉäÎª¡± TT Times New Roman¡±¡¢¡± TT Arial¡±¡¢¡± TT Courier New¡±¡¢¡± TT Symbol¡±£¨TT=True Type£© 
+font 1=æ™®é€š, 2=ç²—ä½“, 3=æ–œä½“, 4=ç²—æ–œä½“, 5=ç¬¦å·å­—ä½“
+font.axis åæ ‡è½´åˆ»åº¦æ ‡ç­¾çš„å­—ä½“æ ·å¼
+font.lab åæ ‡è½´æ ‡é¢˜çš„å­—ä½“
+font.main/font.sub ä¸»æ ‡é¢˜/å­æ ‡é¢˜çš„å­—ä½“
+family å­—ä½“æ—ï¼Œæ ‡å‡†å€¼åŒ…å«â€œserifâ€, â€œsansâ€, â€œmonoâ€, â€œsymbolâ€ï¼Œå…¶æ˜ å°„ä¾èµ–äºå…·ä½“çš„è®¾å¤‡ï¼Œåœ¨Windowsè®¾ç½®ä¸­ï¼Œåˆ†åˆ«è¢«æ˜ å°„ä¸ºâ€ TT Times New Romanâ€ã€â€ TT Arialâ€ã€â€ TT Courier Newâ€ã€â€ TT Symbolâ€ï¼ˆTT=True Typeï¼‰ 
 
 
-µÍË®Æ½»æÍ¼º¯Êı£ºµã¡¢Ö±Ïß¡¢Ïß¶Î¡¢¼ıÍ·¡¢Íø¸ñÏß
+ä½æ°´å¹³ç»˜å›¾å‡½æ•°ï¼šç‚¹ã€ç›´çº¿ã€çº¿æ®µã€ç®­å¤´ã€ç½‘æ ¼çº¿
 
-points ÔÚµ±Ç°»æÍ¼ÇøÔö¼Óµã
-lines ÔÚµ±Ç°»æÍ¼ÇøÔö¼ÓÁ¬½ÓÏß
+points åœ¨å½“å‰ç»˜å›¾åŒºå¢åŠ ç‚¹
+lines åœ¨å½“å‰ç»˜å›¾åŒºå¢åŠ è¿æ¥çº¿
 abline(a,b)
 abline(h=y)
 abline(v=x)
-abline(lm:obj) ÔÚµ±Ç°»æÍ¼ÇøÔö¼ÓÒ»¸öĞ±ÂÊÎªb£¬½Ø¾àÎªaµÄÖ±Ïß¡£
-h=y¿ÉÓÃÓÚÖ¸¶¨¹á´©Õû¸öÍ¼µÄË®Æ½Ïß¸ß¶ÈµÄy-×ø±ê¡£
-v=xÀàËÆµØÓÃÓÚÖ¸¶¨´¹Ö±ÏßµÄx-×ø±ê¡£
-lm:obj ¿ÉÄÜÊÇÒ»¸öÓĞ³¤¶ÈÎª2µÄcoefficients ·ÖÁ¿(ÈçÄ£ĞÍÄâºÏµÄ½á¹û)µÄÁĞ±í¡£¸Ã·ÖÁ¿ÖĞÒÀ´Îº¬ÓĞ½Ø¾àºÍĞ±ÂÊ¡£
-segments »æÖÆµã¶ÔÖ®¼äµÄÏß¶Î
-arrows »æÖÆµã¶ÔÖ®¼äµÄ¼ıÍ·
-grid ÔÚµ±Ç°»æÍ¼ÇøÔö¼ÓÍø¸ñÏß
+abline(lm:obj) åœ¨å½“å‰ç»˜å›¾åŒºå¢åŠ ä¸€ä¸ªæ–œç‡ä¸ºbï¼Œæˆªè·ä¸ºaçš„ç›´çº¿ã€‚
+h=yå¯ç”¨äºæŒ‡å®šè´¯ç©¿æ•´ä¸ªå›¾çš„æ°´å¹³çº¿é«˜åº¦çš„y-åæ ‡ã€‚
+v=xç±»ä¼¼åœ°ç”¨äºæŒ‡å®šå‚ç›´çº¿çš„x-åæ ‡ã€‚
+lm:obj å¯èƒ½æ˜¯ä¸€ä¸ªæœ‰é•¿åº¦ä¸º2çš„coefficients åˆ†é‡(å¦‚æ¨¡å‹æ‹Ÿåˆçš„ç»“æœ)çš„åˆ—è¡¨ã€‚è¯¥åˆ†é‡ä¸­ä¾æ¬¡å«æœ‰æˆªè·å’Œæ–œç‡ã€‚
+segments ç»˜åˆ¶ç‚¹å¯¹ä¹‹é—´çš„çº¿æ®µ
+arrows ç»˜åˆ¶ç‚¹å¯¹ä¹‹é—´çš„ç®­å¤´
+grid åœ¨å½“å‰ç»˜å›¾åŒºå¢åŠ ç½‘æ ¼çº¿
 
 
 ```{r}
-## »ù±¾ÊµÏÖ
+## åŸºæœ¬å®ç°
 plot(-4:4, -4:4, type = "p", col="blue")
-## »æÖÆµã¡¢Á¬½Óµã
+## ç»˜åˆ¶ç‚¹ã€è¿æ¥ç‚¹
 points(x=c(3,-2,-1,3,2), y=c(1,2,-2,2,3), col = "red")
 lines(x=c(3,-2,-1,3,2), y=c(1,2,-2,2,3),col="black")
-## »æÖÆÖ±Ïß
+## ç»˜åˆ¶ç›´çº¿
 abline(h=0)
 abline(v=0)
 abline(a=1,b=1)
 abline(lm(mtcars$mpg ~ mtcars$qsec),col="red")
-## »æÖÆÏß¶Î
+## ç»˜åˆ¶çº¿æ®µ
 segments(x0=2, y0=-4.5, x1=4, y1=-2, col="red", lty="dotted")
-## »æÖÆ¼ıÍ·,²¢ÉèÖÃ¼ıÍ·µÄ³¤¶È¡¢½Ç¶È¡¢ÑùÊ½
+## ç»˜åˆ¶ç®­å¤´,å¹¶è®¾ç½®ç®­å¤´çš„é•¿åº¦ã€è§’åº¦ã€æ ·å¼
 arrows(x0=-4, y0=4, x1=-2, y1=0, length=0.15, angle=30, code=3)
-##»æÖÆÍø¸ñÏß
+##ç»˜åˆ¶ç½‘æ ¼çº¿
 grid(nx=3, ny=5, col = "lightgray", lty = "dotted")
 
 ```
 
 
 
-## »ù±¾ÊµÏÖ
+## åŸºæœ¬å®ç°
 ```{r}
 plot(-4:4, -4:4, type = "p", col="blue")
-polygon( x=c(3,-2,-1,3,2), y=c(1,2,-2,2,3), col = "red") # »æÖÆ¶à±ßĞÎ
+polygon( x=c(3,-2,-1,3,2), y=c(1,2,-2,2,3), col = "red") # ç»˜åˆ¶å¤šè¾¹å½¢
 rect( xleft=c(-4,0), ybottom=c(2,-4),  xright=c(-2,2), ytop=c(4,-2), 
-      col = c("blue", "yellow")) # »æÖÆÁ½¸ö¾ØĞÎ£¬²¢Ìî³äÑÕÉ«
+      col = c("blue", "yellow")) # ç»˜åˆ¶ä¸¤ä¸ªçŸ©å½¢ï¼Œå¹¶å¡«å……é¢œè‰²
 ```
 
 

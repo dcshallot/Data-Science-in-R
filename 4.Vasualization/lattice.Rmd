@@ -2,10 +2,7 @@
 title: "lattice包展示"
 author: "dingchong"
 date: "August 30, 2015"
-output: 
- html_document: 
-    highlight: tango
-    toc: yes
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
