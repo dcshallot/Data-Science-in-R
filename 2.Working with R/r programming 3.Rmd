@@ -1,5 +1,9 @@
 ---
-[cousera数据科学]R Programming 3  - 4
+title: "[cousera数据科学]R Programming 3  - 4"
+author: "dingchong"
+date: "2017/6/22"
+output: github_document
+
 ---
 
 ## 第三课 向量化运算和debug
@@ -79,11 +83,11 @@ trace ： 插入fuction的任意位置？？
 recover ： ？？allows you to modify the error behavior so that you can browse the function call stack
 
 ```{r}
-lm( y ~ x )
+lm( Sepal.Length ~ Sepal.Width ,iris)
 traceback()
 
-debug(lm)
-lm( y ~ x )
+# debug(lm)
+# lm( Sepal.Length ~ Sepal.Width ,iris)
 ```
 
 

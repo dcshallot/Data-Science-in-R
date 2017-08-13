@@ -2,7 +2,7 @@
 title: "Reproducible Research"
 author: "tedding"
 date: "April 12, 2016"
-output: html_document
+output: github_document
 ---
 
 
