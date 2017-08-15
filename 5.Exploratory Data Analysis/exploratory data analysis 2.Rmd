@@ -2,7 +2,7 @@
 title: "exploratory data analysis 2"
 author: "Dingchong"
 date: "Tuesday, March 17, 2015"
-output: html_document
+output: github_document
 ---
 
 ## WEEK 2 Lattice and ggplot2

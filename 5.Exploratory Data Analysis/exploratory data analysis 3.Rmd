@@ -2,7 +2,7 @@
 title: "exploratory data analysis 3"
 author: "Dingchong"
 date: "Friday, March 20, 2015"
-output: html_document
+output: github_document
 ---
 
 ## WEEK 3 
@@ -239,9 +239,9 @@ plot( colMeans( dataMatrixOrdered), xlab = "Column", ylab = "Column Mean", pch =
 ```
 
 
-Ïà¹ØÎÊÌâ£º
-1.Ö÷³É·Ö·ÖÎö£ºÏà¹Ø±äÁ¿£¬·Ö½â³É²»Ïà¹ØµÄ¶ÀÁ¢£¨½ÏÉÙ£©±äÁ¿
-2.SVD£º¾ØÕó½µÎ¬,Êı¾İÑ¹Ëõ
+???????â£º
+1.???É·Ö·????????Ø±?ï¿½ï¿½???Ö½??É²????ØµÄ¶?ï¿½ï¿½?????Ù£???ï¿½ï¿½
+2.SVD????????Î¬,????Ñ¹??
 
 Components of the SVD - u and v
 
@@ -255,7 +255,7 @@ plot( svd1$v[,1], xlab = "Column", ylab = "First right singular vector", pch = 1
 
 ```
 
-ËùÒÔÆæÒìÖµ·Ö½âµÄuºÍvÆäÊµÊÇ°ÑĞĞºÍÁĞµÄÌØÕ÷ÌáÈ¡³öÀ´
+????????Öµ?Ö½???u??v??Êµ?Ç°??Ğº??Ğµ???????È¡??ï¿½ï¿½
 
 Components of the SVD - Variance explained 
 
@@ -267,7 +267,7 @@ plot( svd1$d^2/sum( svd1$d^2), xlab = "Column", ylab = "Prop. of variance explai
 ```
 
 Relationship to principal components
-»ù±¾ÉÏÊÇÒ»»ØÊÂ¶ù
+????????Ò»???Â¶?
 ```{r}
 
 svd1 = svd( scale(dataMatrixOrdered))
