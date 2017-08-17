@@ -2,7 +2,7 @@
 title: "Practical Machine Learning week1"
 author: "Dingchong"
 date: "Friday, September 05, 2014"
-output: html_document
+output: github_document
 ---
 
 #Week 1
@@ -42,10 +42,10 @@ pick features: use cross-validation; pick prediction function: use cross-validat
 www.kaggle.com/   
 avoid small sample sizes:    
 for binary outcome, probability of perfect classification is approximately (1/2)^n.   
-Ñù±¾Ô½´ó£¬ÅöÇÉÕıÈ·µÄ¸ÅÂÊÔ½Ğ¡£¬¶øÄ£ĞÍµÄ×÷ÓÃÔ½Ã÷ÏÔ¡£   
+????Ô½??????????È·?Ä¸???Ô½Ğ¡????Ä£?Íµ?????Ô½???Ô¡?   
 
-Ä´Ö¸·¨Ôò   
-´óÑù±¾£º60%ÑµÁ·£¬20%²âÊÔ£¬20%½»²æ¼ìÑé£»ÖĞÑù±¾£º60-40%£»Ğ¡Ñù±¾£ºcross validation   
+Ä´Ö¸????   
+????????60%Ñµï¿½ï¿½??20%???Ô£?20%???????é£»????????60-40%??Ğ¡??????cross validation   
 
 
 

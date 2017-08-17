@@ -2,7 +2,7 @@
 title: "Practical Machine Learning week1"
 author: "Dingchong"
 date: "Friday, September 15, 2014"
-output: html_document
+output: github_document
 ---
 
 #Week 2
@@ -189,7 +189,9 @@ level2 feature creation
 ### Basic PCA idea   
 we should pick this combination to capture the "most information" possible   
 Benefits: reduced number of predictors/ reduced noise( due to averaging )
+
 ```{r}
+
 rm(list=ls()) 
 library(caret);library(kernlab);data(spam)
 inTrain <- createDataPartition( y = spam$type, p=0.75, list=F)
@@ -219,7 +221,7 @@ preProc <- preProcess( log10(training[,-58]+1), method="pca", pacComp=2 )
 trainPC <- predict( preProc, log10(training[,-58]+1))
 modelFit <- train( training$type ~ ., method="glm", data =  trainPC )
 testPC <- predict( preProc, log10( testing[, -58]+1))
-confusionMatrix( testing$type, predict( modelFit, testPC ))
+confusionMatrix( testing$type, predict( modelFit, testPC ) )
 
 ```
 
