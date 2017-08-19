@@ -2,10 +2,7 @@
 title: "timeSeriseAll"
 author: "tedding"
 date: "June 15, 2016"
-output: 
-  html_document: 
-    highlight: tango
-    toc: yes
+output: github_document
 ---
 
 
@@ -15,8 +12,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Environment settings
 ```{r}
-setwd('F:/∞Ÿ∂»‘∆Õ¨≤Ω≈Ã/2016H1/25. ±º‰–Ú¡–’˚¿Ì/')
-
+setwd(
+'/Users/dingchong/github/Data-Science-in-R/11.Time Series Analysis')
 #dir <- iconv(rstudioapi::getActiveDocumentContext()$path, 'utf8','gbk') # win
 #dir <- rstudioapi::getActiveDocumentContext()$path # mac
 #dir <- substr(dir, 1,
@@ -36,7 +33,7 @@ data.ts = ts( data$new , frequency = 7 )
 plot(data.ts)
 
 ```
-[ts - frequncey](http://robjhyndman.com/hyndsight/seasonal-periods/],the °∞frequency°± is the number of observations per season. Here I think it means 7 data comes to a week unit.)
+[ts - frequncey](http://robjhyndman.com/hyndsight/seasonal-periods/],the ‚Äúfrequency‚Äù is the number of observations per season. Here I think it means 7 data comes to a week unit.)
 
 xts way
 ```{r}
@@ -49,8 +46,8 @@ plot(data.xts)
 
 extract some time 
 ```{r}
-plot( data$new[ months(data$date) == '»˝‘¬' ], type = 'b', main ='March')
-plot( data$new[ weekdays(data$date) == '–«∆⁄“ª' ], type = 'b', main ='Monday')
+plot( data$new[ months(data$date) == '‰∏âÊúà' ], type = 'b', main ='March')
+plot( data$new[ weekdays(data$date) == 'ÊòüÊúü‰∏Ä' ], type = 'b', main ='Monday')
 ```
 
 considering the week days 
@@ -96,7 +93,7 @@ effect.week
 - SLS seasonal level shift
 
 ```{r}
-# install.packages(°Ætsoutliers°Ø)
+# install.packages(‚Äòtsoutliers‚Äô)
 
 library("tsoutliers")
 data(Nile)
@@ -253,7 +250,7 @@ plot(forecast(fit))
 ## Seasonal arima models
 ARIMA(p,d,q)(P,D,Q)
 
-Quarterly retail trade index in the Euro area (17 countries), 1996®C2011, covering wholesale and retail trade, and repair of motor vehicles and motorcycles. 
+Quarterly retail trade index in the Euro area (17 countries), 1996?C2011, covering wholesale and retail trade, and repair of motor vehicles and motorcycles. 
 ```{r}
 plot(euretail, ylab="Retail index", xlab="Year")
 ```
@@ -295,7 +292,7 @@ auto.arima(euretail, stepwise=FALSE, approximation=FALSE)
 ```
 
 remenber the 1-7 steps? 
-The automated algorithm only takes care of steps 3®C5. So even if you use it, you will still need to take care of the other steps yourself.
+The automated algorithm only takes care of steps 3?C5. So even if you use it, you will still need to take care of the other steps yourself.
 
 
 
@@ -326,7 +323,7 @@ accuracy( data.forecast, data$new[101:120] )
 ```
 
 
-# ≤ª÷™µ¿”– ≤√¥¬—”√£¨‘› ±∂—‘⁄’‚¿Ô
+# ‰∏çÁü•ÈÅìÊúâ‰ªÄ‰πàÂçµÁî®ÔºåÊöÇÊó∂Â†ÜÂú®ËøôÈáå
 
 ```{r}
 # 
