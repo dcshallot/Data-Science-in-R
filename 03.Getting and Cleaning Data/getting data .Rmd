@@ -1,0 +1,168 @@
+---
+title: "getting data"
+author: "Dingchong"
+output: github_document
+---
+
+
+# 概述
+
+
+# 从本地获取数据
+
+## 获取本地数据——read.table()
+
+read.table()
+最常用的函数，但是数据量受内存限制；
+重要参数包括
+  file,文件名；
+  header,是否包含表头；
+  sep,间隔符号；
+  row.names,可以定义行名，默认或者NULL则是序号；
+  nrows，读入行数，数据量大是分批读入用；
+  quote，指定字符引用的符号`'"' 之类的；
+  na.string，代表NA的字符，如果raw data是SQL出来的，这里可以指定NULL；
+  skip，从第几行开始读；
+相关read.csv(), read.csv2(), read.delim()...
+
+read.csv('stay_summary_code.csv', na.strings = 'NULL', stringsAsFactors = F)
+
+
+
+## Using data.table
+
+data.table包，由c写的所以非常快的subsetting, group, updating
+但是需要稍加学习
+
+```{r}
+library( data.table)
+DF = data.frame( x = rnorm(9), y = rep( c("a", "b", "c"), each = 3 ), z = rnorm(9) )
+head(DF)
+
+DT = data.table( x = rnorm(9), y = rep( c("a", "b", "c"), each = 3 ), z = rnorm(9) ) 
+head(DT)
+
+tables() # show all datatables in memory
+
+# subsetting
+DT[2, ] 
+DT[DT$y == "a"]
+# subsetting rows, but cannot subsetting cols like dataframe
+DT[ c(2,3) ]
+
+# calculationi values for vars with expressions
+DT[, list( mean(x), sum(z) )]
+DT[, table(y)]
+
+# adding new columes
+DT[ , w := z^2 ]
+
+# multiple operations
+DT[ , m := { tmp <- (x+z); log2(tmp+5 ) } ]
+
+# plyr like operations
+DT[, a := x >0 ]
+DT[, b := mean(x+w), by = a ] # if a is ture then mean...
+
+```
+
+
+
+## 读excel表格
+read.xlsx() { xlsx package}
+略
+
+## 读取XML
+< section  number='3'> hello,world < /section>
+不灵！
+```{r}
+# library(XML)
+# fileUrl <- "http://www.w3schools.com/xml/simple.xml"
+# doc <- xmlTreeParse( fileUrl, useInternal=T)
+# rootNode <- xmlRoot(doc)
+# xmlName(rootNode)
+# xmlValue(rootNode)
+# rootNode[[1]]
+# rootNode[[1]][[1]]
+# xmlSApply( rootNode, xmlValue)
+# xpathSApply( rootNode, "//name", xmlValue)
+# xpathSApply( rootNode, "//price", xmlValue)
+```
+
+
+
+## reading from other sources
+library(foreign)
+read.arf - weka
+read.dta - stata
+read.spss - spss
+read.xprt - SAS
+RODBC
+RMongo
+
+
+
+# 从互联网获取数据
+
+## read JSON data
+```{r}
+# library(jsonlite)
+# # read
+# jsonData <- fromJSON( "https://api.github.com/users/jtleek/repos" )
+# names(jsonData)
+# jsonData$owner$login
+# # write
+# myjson <- toJSON(iris, pretty = T )
+# myjson
+```
+
+
+## 获取数据——internet
+
+download.file()
+可重复执行，可下载txt,csv等格式，关键参数包括url,destfile,method。
+例子：  
+
+> setwd("/Users/dingchong/github/Data-Science-in-R/03.Getting and Cleaning Data")
+```{r}
+fileUrl <- "https://data.baltimorecity.gov/api/views/dz54-2aru/rows.csv?accessType=DOWNLOAD"
+download.file( fileUrl, destfile = "./cameras.csv" ) 
+# on mac, use this:  method ="curl"
+list.files("./") # done 
+```
+注意事项
+1.http开头的，默认下载就好；https开头的在MAC下需要加method ="curl"
+
+
+
+## read from APIs
+```{r}
+# twitter
+
+
+```
+
+
+# 从数据库获取数据
+
+## MySQL
+win环境下可通过RODBC连接
+
+>library(RMySQL)
+ 
+>ucscDb = dbConnect( MySQL(), user = 'genome', 
+  host ='genome-mysql.cse.ucsc.edu', db = 'hg19')
+  
+>tb = dbGetQuery( ucscDb, 'show databases;')
+>head(tb)
+
+>dbGetQuery(ucscDb , 
+  " select bin,matches,misMatches from hg19.affyU133Plus2 limit 5") 
+  
+>dbDisconnect(ucscDb)
+
+
+## reading from HDF5
+科学计算用的数据格式，略
+
+
