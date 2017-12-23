@@ -15,14 +15,14 @@ To build a framework of how to use R to deal with common analysis jobs, and how 
 ### CATALOG
 
 1. The Data Scientist’s Toolbox： of course R,  and some of my view about big data landscape, includes python, spark, hadoop, GitHub , markdown etc. And ideas like reproducible Research. 
-2. R Programming： basic grammar you can find in otherplaces, trying to be different. 
+2. Working with R： basic grammar you can find in otherplaces, trying to be different. 
 3. Getting and Cleaning Data： read local data, using APIs , db, or odbc/jdbc and etc jobs.
 4. Exploratory Data Analysis： descriptive statistics, visualization, espcially in multivariate sense.  
-5. Statistical Inference and variance analysis： they are a important part of statistics , but , seems not that important in nowadays data sciences. Let's see what we can do. 
+5. Statistical Inference and Variance Analysis： they are a important part of statistics , but , seems not that important in nowadays data sciences. Let's see what we can do. 
 6. Regression Models and Classifications： main stream of machine learning 
 7. Unsupervised Machine Learning:   clustering and LOF
-8. Web crawler and NLP:  some applications 
-9. Time series analysis:  practical way, arima , machine learning and other way
+8. Web Crawler and NLP:  some applications 
+9. Time Series Analysis:  practical way, arima , machine learning and other way
 10. always changing my mind… 
 
 ### ABOUT R
