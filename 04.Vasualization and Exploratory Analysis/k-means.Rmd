@@ -1,0 +1,171 @@
+---
+title: "k-means"
+author: "dingchong"
+date: "2017/11/14"
+output: md_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(jtrans)
+library(ggplot2)
+library(RColorBrewer)
+library(dplyr)
+library(ggfortify) # let {ggplot2} know how to interpret PCA objects
+
+```
+
+## R Markdown
+
+
+# kmeans functioin 
+```{r}
+
+min.max.norm <- function(x){ (x-min(x))/(max(x)-min(x))}
+
+
+
+```
+
+# read data and raw summary
+
+```{r}
+data1 <- iris[ ,-5 ]
+summary(data1)
+
+```
+
+
+
+
+# data fitness
+
+
+### 常用变量处理：缺失值不全、汇总、剔除
+
+resultdata[is.na(resultdata) ] <- 0 
+resultdata$heavyachor<-rowSums(resultdata[,c("flyscreentimes","seatptimes")])
+
+### 按列剔除
+outnames=c("qq","X","impressiontimes","votetimes")
+resultdata<-resultdata[,colnames(resultdata)%in%outnames]
+resultdata<-resultdata[,-which(names(resultdataCha)%in%outnames)]
+
+### 按行剔除
+resultdataCha<-resultdata[-which(resultdata$qq %in% c(2797467472,3072755924)),]
+
+### scale 
+- 
+
+```{r}
+# soc$talktime <- log(data2$talktimes)
+
+cludata <- sapply( data1, function(x) min.max.norm( jtrans(x)$transformed ) )
+
+```
+
+# 轮廓系数，确定K
+
+```{r}
+
+wss <- (nrow(cludata)-1)*sum(apply(cludata,2,var))
+k <- 2:12
+for (i in k) wss[i] <- sum(kmeans(cludata, centers=i)$withinss)
+plot(1:12, wss, type="b",
+     xlab="Number of Clusters", ylab="Within groups sum of squares")
+
+```
+
+
+# 固定聚心聚类
+
+```{r}
+k = 5
+set.seed(777)
+clu <- kmeans( cludata ,k)
+# reorder cluster centers 
+ccenter <- clu$centers
+ccenter <- ccenter[order(ccenter[,1]),]
+clu <- kmeans( cludata , ccenter)
+```
+
+
+# 结果展示
+
+### 聚类结果展示-较少变量的情况
+
+```{r}
+
+sum(clu$size)
+clu$size
+round( clu$centers,2)
+
+aggregate( x=data1,by=list(clu$cluster), function(x) c( mean=mean(x), sd = sd(x)))
+
+
+barplot( ifelse( t(clu$centers)-0.3 >0, t(clu$centers), 0) ,
+         main ='cluster center',
+         beside = T, col= brewer.pal( ncol(cludata)  ,"Set3"),  
+         names.arg = rownames( clu$centers ) , ylim=c( 0 ,1.1) )
+legend( legend= colnames( clu$centers)  ,  horiz = F, cex = 0.8, bty = "n",
+        "topright", pch=15, col=brewer.pal( ncol(cludata) ,"Set3") ) 
+
+ifelse( clu$centers > 0.1,  round(clu$centers,2), 0) 
+
+```
+
+
+
+### Biplot & Scatterplot Matrix
+
+```{r}
+
+clu.pca <- prcomp( data1,
+                 center = TRUE,
+                 scale. = TRUE) 
+
+summary(clu.pca)
+autoplot(clu.pca, colour = clu$cluster)
+
+# https://stackoverflow.com/questions/42913023/warning-message-from-ggfortifyggbiplot
+
+```
+
+
+
+### 聚类结果-变量较多的情况
+
+
+#计算不同聚类结果的数量和占比
+centerPer<-sapply(ccenter[,-1],PercentCacu)
+
+
+#返回每个元素，在每个列中的位置
+centerRank <- data.frame(ccenter[,c("clusterid")])
+for(i in 1:(ncol(ccenter)-1))
+{
+  centertemp<-as.data.frame(rank(ccenter[,i])) 
+  
+  colnames(centertemp)<-names(ccenter[i])
+  
+  centerRank<-cbind(centerRank,centertemp)
+}
+
+
+
+
+
+# ref 
+
+
+### johnson转换
+[方法标准]
+http://www.jmp.com/support/help/K-Means_Clustering.shtml
+[公式]
+https://support.minitab.com/en-us/minitab/18/help-and-how-to/quality-and-process-improvement/quality-tools/how-to/johnson-transformation/methods-and-formulas/methods-and-formulas/
+[转换效果和实现]
+https://rexplorations.wordpress.com/2015/11/03/johnson-transformation-for-non-normal-data/
+
+
+
