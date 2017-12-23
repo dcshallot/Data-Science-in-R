@@ -1,7 +1,7 @@
 # Data-Science-in-R
 Data Science in R —— fundamental and industry applications
 
-##Background
+### Background
 ABOUT ME :    
 
 I started using R from 2012, for some text mining jobs. For these years, I have been working in interenet companies including human resources(NASDAQ:ZPIN), games(NASDAQ: CYOU) and some entrepreneurship project. Now , I am in one of the largest technology companies in the world, TENCENT .   
@@ -12,7 +12,8 @@ To build a framework of how to use R to deal with common analysis jobs, and how 
 
  
 
-##CATALOG
+### CATALOG
+
 1. The Data Scientist’s Toolbox： of course R,  and some of my view about big data landscape, includes python, spark, hadoop, GitHub , markdown etc. And ideas like reproducible Research. 
 2. R Programming： basic grammar you can find in otherplaces, trying to be different. 
 3. Getting and Cleaning Data： read local data, using APIs , db, or odbc/jdbc and etc jobs.
@@ -24,7 +25,7 @@ To build a framework of how to use R to deal with common analysis jobs, and how 
 9. Time series analysis:  practical way, arima , machine learning and other way
 10. always changing my mind… 
 
-##关于R
+### ABOUT R
 比java,c效率低下的分析用语言，不适合工程应用，也不能独立应付“大数据”（单机百万行的分析建模差不多了）；   
 它的学习成本高于点选拖拽式的分析软件（SPSS，excel），想要产出一样效果的报告，要付出更多的时间精力；   
 但是，数据分析师确实可以基于R和各种接口包，搭建一个不错的分析环境：   
@@ -37,7 +38,7 @@ To build a framework of how to use R to deal with common analysis jobs, and how 
 
 
 
-##CONTACT 
+### CONTACT 
 
 chong.ding83 at gmail.com   
 
@@ -45,7 +46,7 @@ https://www.linkedin.com/in/chong-ding-38b59837/
 
 
 
-## LOG
+### LOG
 2015-4-16 Angrew Ng 大神的ML课程也是很赞的哈！想学ML的小白推荐哈！  
 2016-4-11 最近即将启动一次重大更新！整合我在鹅厂内部课程和这一年的相关积累   
 2016-6-29 时间序列分析的基础内容添加完了
