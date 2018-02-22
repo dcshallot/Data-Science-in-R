@@ -1,0 +1,126 @@
+---
+title: "k-means between python and r"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("/Users/dingchong/worktencent/7.datamore月光宝盒项目/20171102 炫斗用户标签")
+
+library(gplots)
+
+```
+
+### Library and Functions 
+
+```{r}
+sort.center <- function(x) { x[order(x[,2]),] }
+vxdscale <- read.csv('vxd_cluster_test.csv', header = T)
+summary(vxdscale)
+k =8
+```
+
+### Kmeans in R
+
+###### Parameters 
+
+- centers:设定聚类个数，则从原始样本中随机抽k个样本作为初始聚心
+
+- nstart:可理解为随机选择多组聚心，并返回最优的，更耗时。这是对初始聚心选择不好的修正，效果么，，有待评价
+
+- iter.max:迭代次数默认为10，后面会比较不同迭代次数的差异
+
+- algorithm
+- 这里可选"Hartigan-Wong", "Lloyd", "Forgy","MacQueen"，默认第一种   
+- H-W算法的终止条件是超过迭代次数，或样本的类别归属不再变化。在数据不好的情况下，样本类别可能像跷跷板一样波动，则终止条件依赖最大迭代次数的设置了。
+
+##### Run and output  
+```{r}
+set.seed(1234)
+clu <- kmeans( vxdscale ,k )
+kout.0 <- sort.center( clu$centers )
+fitss0 <- clu$betweenss/clu$totss 
+kout.0[1:3,1:3];fitss0
+```
+
+### kmeans in Python 
+
+```{r engine='python', highlight=TRUE, eval= FALSE }
+from copy import deepcopy
+import numpy as np
+import pandas as pd
+import os  # Importing the dataset
+from sklearn import preprocessing
+from sklearn.cluster import KMeans
+os.chdir('workdir...')
+vxdscale = pd.read_csv('vxd_cluster_test.csv')
+print(vxdscale.shape)
+
+k=8
+model=KMeans(n_clusters=k,random_state=1234)
+model.fit(vxdscale)
+center=pd.DataFrame(model.cluster_centers_)
+center.to_csv( 'center_py.csv' )
+
+```
+
+##### parameters
+
+- init : {‘k-means++’(default), ‘random’ or an ndarray} 
+- ‘k-means++’ : selects initial cluster centers for k-mean clustering in a smart way to speed up convergence. 
+- n_init : int, default: 10,Number of time the k-means algorithm will be run with different centroid seeds. 
+- max_iter : int, default: 300
+- tol : float, default: 1e-4. Relative tolerance with regards to inertia to declare convergence
+- n_jobs : int. The number of jobs to use for the computation. If -1 all CPUs are used.
+- algorithm : “auto”, “full” or “elkan”, default=”auto”. K-means algorithm to use. The classical EM-style algorithm is “full”. The “elkan” variation is more efficient by using the triangle inequality, but currently doesn’t support sparse data. “auto” chooses “elkan” for dense data and “full” for sparse data.
+
+### compare 
+
+```{r}
+center.py <- as.matrix(read.csv('center_py.csv')[-1])
+center.py <- sort.center(center.py)
+
+range <- abs(kout.0 - center.py)/ 
+  pmax( abs(kout.0), abs(center.py) )
+
+summary( as.numeric(range ))
+hist(range)
+heatmap.2( range, dendrogram= 'none' , Rowv= F, trace = 'none')
+
+```
+
+### full power !
+
+##### R
+```{r}
+set.seed(1234)
+clu <- kmeans( vxdscale ,k, nstart = 10, iter.max = 500 )
+kout <- sort.center( clu$centers )
+fitss1 <- clu$betweenss/clu$totss 
+fitss1;fitss0
+```
+
+##### python
+```{r engine='python', highlight=TRUE, eval= FALSE }
+model=KMeans(n_clusters=k , max_iter=500, n_init=10, init='random',
+    random_state=1234 )
+```
+
+##### compare2
+```{r}
+center.py <- as.matrix(read.csv('center_py.csv')[-1])
+center.py <- sort.center(center.py)
+
+range <- abs(kout - center.py)/ 
+  pmax( abs(kout), abs(center.py) )
+summary( as.numeric(range ))
+hist(range)
+heatmap.2( range, dendrogram= 'none' , Rowv= F, trace = 'none')
+```
+
+##### conclusion
+more times, more accurate
+
+### Ref
+- 相关算法的讨论可以参考[这里]https://datascience.stackexchange.com/questions/9858/convergence-in-hartigan-wong-k-means-method-and-other-algorithms
+- 以及[这里]https://www.r-bloggers.com/k-means-clustering-from-r-in-action/
